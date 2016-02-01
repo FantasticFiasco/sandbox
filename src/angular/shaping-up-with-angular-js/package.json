@@ -1,0 +1,15 @@
+{
+  "name": "shaping-up-with-angular-js",
+  "version": "1.0.0",
+  "description": "Course from http://campus.codeschool.com/courses/shaping-up-with-angular-js/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.4.9",
+    "bootstrap": "^3.3.6"
+  }
+}
