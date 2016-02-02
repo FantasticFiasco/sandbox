@@ -1,16 +1,26 @@
 <!doctype html>
-<html ng-app="store">
+<html ng-app="gemStore">
     <head>
-        <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min,css">
-    </head>
-    <body ng-controller="StoreController as store">
-        <div ng-repeat="product in store.products">
-            <h1>{{product.name}}</h1>
-            <h2>${{product.price}}</h2>
-            <p>{{product.description}}</p>
-            <button ng-show="product.canPurchase">Add to cart</button>
-        </div>
+        <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
         <script type="text/javascript" src="app.js"></script>
+    </head>
+    <body class="list-group" ng-controller="StoreController as store">
+        <!--  Product Container  -->
+        <div class="list-group-item" ng-repeat="product in store.products">
+            <h3>{{product.name}} <em class="pull-right">{{product.price | currency}}</em></h3>
+
+            <!-- Image Gallery  -->
+            <div class="gallery" ng-show="product.images.length">
+                <div class="img-wrap">
+                    <img ng-src="{{product.images[0]}}" />
+                </div>
+                <ul class="img-thumbnails clearfix">
+                    <li class="small-image pull-left thumbnail" ng-repeat="image in product.images">
+                        <img ng-src="{{image}}" />
+                    </li>
+                </ul>
+            </div>
+        </div>
     </body>
 </html>
