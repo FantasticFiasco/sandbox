@@ -9,7 +9,7 @@
         });
     }]);
         
-     app.controller('ReviewController', function() {
+    app.controller('ReviewController', function() {
         this.review = {};
     
         this.addReview = function(product) {
@@ -18,6 +18,4 @@
             this.review = {};
         };
     });
-    
-    var gems = 
 })();
