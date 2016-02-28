@@ -8,13 +8,13 @@ angular.module('F1FeederApp', [
             .when(
                 "/drivers",
                 {
-                    templateUrl: "partials/drivers.html",
+                    templateUrl: "js/partials/drivers.html",
                     controller: "driversController"
                 })
             .when(
                 "/drivers/:id",
                 {
-                    templateUrl: "partials/driver.html", controller: "driverController"
+                    templateUrl: "js/partials/driver.html", controller: "driverController"
                 })
             .otherwise(
                 {
