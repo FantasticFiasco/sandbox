@@ -3,7 +3,7 @@ angular.module('F1FeederApp', [
     'F1FeederApp.services',
     'ngRoute'
     ])
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when(
                 "/drivers",

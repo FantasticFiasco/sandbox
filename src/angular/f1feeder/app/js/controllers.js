@@ -1,5 +1,5 @@
 angular.module('F1FeederApp.controllers', [])
-    .controller('driversController', function($scope, ergastAPIservice) {
+    .controller('driversController', function ($scope, ergastAPIservice) {
         $scope.nameFilter = null;
         $scope.driversList = [];
 
@@ -14,7 +14,7 @@ angular.module('F1FeederApp.controllers', [])
                 $scope.driversList = response.MRData.StandingsTable.StandingsLists[0].DriverStandings;
             });
     })
-    .controller('driverController', function($scope, $routeParams, ergastAPIservice) {
+    .controller('driverController', function ($scope, $routeParams, ergastAPIservice) {
         $scope.id = $routeParams.id;
         $scope.races = [];
         $scope.driver = null;
