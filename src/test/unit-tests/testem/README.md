@@ -10,14 +10,10 @@ Project is open source, and code can be found [here](https://github.com/testem/t
 
 To install Test’em, open a CMD and run:
 
-`
->npm install -g testem
-`
+`npm install -g testem`
 
 ## Running tests
 
 To run the tests, open a CMD and run:
 
-`
->testem
-`
+`testem`
