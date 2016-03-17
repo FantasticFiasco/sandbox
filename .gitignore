@@ -21,3 +21,6 @@
 
 ## bower Packages
 **/bower_components/*
+
+## WebStorm configuration
+.idea/
