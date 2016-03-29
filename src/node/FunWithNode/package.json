@@ -1,0 +1,14 @@
+{
+  "name": "FunWithNode",
+  "version": "0.0.0",
+  "description": "FunWithNode",
+  "main": "app.js",
+  "author": {
+    "name": "FantasticFiasco",
+    "email": ""
+  },
+  "dependencies": {
+    "express": "^4.13.4",
+    "underscore": "^1.8.3"
+  }
+}
