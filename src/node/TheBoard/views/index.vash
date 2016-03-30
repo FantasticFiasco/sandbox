@@ -1,0 +1,13 @@
+﻿@html.extend('layout', function(model) {
+	@html.block("body", function(model) {
+		<h1>@model.title</h1>
+
+		@if (model.error) {
+			<p class="text-error">Error occurred: @model.error</p>
+		}
+
+		@model.categories.forEach(function(category) {
+			<div><span>@(category.notes ? category.notes.length : 0) - </span><a href="#">@category.name</a></div>
+		})
+	})
+})

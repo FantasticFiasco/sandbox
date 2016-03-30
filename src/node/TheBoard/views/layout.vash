@@ -1,0 +1,15 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <title>@model.title</title>
+    <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/lib/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="/css/site.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div>@html.block("body")</div>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/underscore/underscore.js"></script>
+  </body>
+</html>
