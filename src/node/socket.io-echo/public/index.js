@@ -29,7 +29,7 @@ var startSendingMessages = function() {
     setInterval(function() {
         socket.emit('message', formatDate(new Date()));
     },
-    1000);
+    15000);
 };
 
 var incrementCount = function() {
