@@ -25,7 +25,9 @@ http.listen(port, function() {
 
 // Send pings to clients
 setInterval(function () {
-    var message = formatDate(new Date());
+    var nowWithTimezoneOffset = new Date();
+    nowWithTimezoneOffset.setHours(nowWithTimezoneOffset.getHours() + 2);
+    var message = formatDate(nowWithTimezoneOffset);
     console.log('ping: ' + message);
     io.emit('ping', message);
 },
