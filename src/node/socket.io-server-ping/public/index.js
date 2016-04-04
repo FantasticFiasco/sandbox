@@ -3,7 +3,9 @@ var count = -1;
 
 $(document).ready(function() {
     // Start
-    $('#start').text(formatDate(new Date()));
+    var start = new Date();
+    start.setHours(start.getHours() - 2);
+    $('#start').text(formatDate(start));
 
     // Count
     incrementCount();

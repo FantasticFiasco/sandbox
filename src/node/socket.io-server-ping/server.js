@@ -29,7 +29,7 @@ setInterval(function () {
     console.log('ping: ' + message);
     io.emit('ping', message);
 },
-15000);
+5000);
 
 var formatDate = function(date) {
     // Date
