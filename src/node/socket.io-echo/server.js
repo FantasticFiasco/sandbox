@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var port = 8080;
 
 // Set the public static resource folder
 app.use(express.static(__dirname + "/public"));
@@ -23,6 +24,6 @@ io.on('connection', function(socket) {
     });
 });
 
-http.listen(3000, function() {
-    console.log('listening on *:3000');
+http.listen(port, function() {
+    console.log('listening on *:' + port);
 });
