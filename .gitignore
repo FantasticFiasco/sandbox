@@ -25,5 +25,8 @@
 ## bower Packages
 **/bower_components/*
 
+## Type definitions
+**/typings/*
+
 ## WebStorm configuration
 .idea/

@@ -1,0 +1,10 @@
+{
+  "ambientDependencies": {
+    "express": "registry:dt/express#4.0.0+20160317120654",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160322035842",
+    "marked": "registry:dt/marked#0.0.0+20160325085301",
+    "node": "registry:dt/node#4.0.0+20160505172921",
+    "request": "registry:dt/request#0.0.0+20160316155526",
+    "serve-static": "registry:dt/serve-static#0.0.0+20160501131543"
+  }
+}
