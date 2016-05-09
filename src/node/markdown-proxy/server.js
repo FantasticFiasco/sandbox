@@ -39,11 +39,15 @@ function processMarkdownRequest(req, res) {
     if (!error && response.statusCode == 200) {
       res.send(marked(body));
     }
-    else if (response) {
-      sendMarkdownError(res, `Reading Markdown failed due to status: ${response.statusMessage}.`);
-    }
     else {
-      sendMarkdownError(res, 'Reading Markdown failed due to unknown error.');
+      console.log(`${error} (${req.query.url})`);
+      
+      if (response) {
+        sendMarkdownError(res, `Reading Markdown failed due to status: ${response.statusMessage}.`);
+      }
+      else {
+        sendMarkdownError(res, 'Reading Markdown failed due to unknown error.');
+      }
     }
   });
 }
