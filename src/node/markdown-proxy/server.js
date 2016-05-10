@@ -1,102 +1,72 @@
 /// <reference path="typings/main.d.ts" />
 
 var app = require('express')();
-var request = require('request');
-var marked = require('marked');
 var url = require('url');
+var network = require('./network');
+var markdownParser = require('./markdownParser');
 
 /**
  * Express configuration that routes all incoming requests.
  */
 app.get('/*', function(req, res) {
-  if (isMarkdownRequest(req)) {
-    processMarkdownRequest(req, res);
+  if (req.query.url) {
+    // A request for a Markdown since the parameter 'url' has been specified
+    requestMarkdown(req.query.url, res);
   }
-  else if (isReferenceRequest(req)) {
-    processReferenceRequest(req, res);
+  else if (req.header('Referer')) {
+    // A request for referenced file from the Markdown, e.g. a path of an image
+    redirectReference(req.header('Referer'), req.path, res);
   }
   else {
-    processInvalidRequest(res);
+    // Invalid request, show usage
+    showUsage(res);
   }
 });
 
 /**
- * Determines whether specified request is a request for a Markdown file.
- * @param {Express.Request} req The request to analyze.
- * @returns {Boolean} true if request is a Markdown request; otherwise false.
+ * Requests the Markdown and responds with the parsed HTML if successful: otherwise responds with
+ * an error message. 
+ * @param {string} url The location of the Markdown.
+ * @param {Express.Response} res The response to finalize.
  */
-function isMarkdownRequest(req) {
-  return req.query.url;
-}
-
-/**
- * Processes the specified request and responds with rendered Markdown if successful: otherwise responds with an error message. 
- * @param  {Express.Request} req The Markdown request to process.
- * @param  {Express.Response} res The response to finalize.
- */
-function processMarkdownRequest(req, res) {
-  request(req.query.url, function(error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.send(marked(body));
+function requestMarkdown(url, res) {
+  network.get(url, function(error, markdownText) {
+    if (error) {
+      showError(res, `Reading Markdown failed due to: ${error}`);
     }
     else {
-      console.log(`${error} (${req.query.url})`);
-      
-      if (response) {
-        sendMarkdownError(res, `Reading Markdown failed due to status: ${response.statusMessage}.`);
-      }
-      else {
-        sendMarkdownError(res, 'Reading Markdown failed due to unknown error.');
-      }
+      res.send(markdownParser.toHtml(markdownText));
     }
   });
 }
 
 /**
- * Determines whether specified request is a request for a reference. Example of a reference is an image defined in the Markdown file.
- * @param {Express.Request} req The request to analyze.
- * @returns {Boolean} true if request is a reference request; otherwise false.
- */
-function isReferenceRequest(req) {
-  return req.header('Referer');
-}
-
-/**
- * Processes the specified request and responds with redirect if successful: otherwise responds with an error message. 
- * @param  {Express.Request} req The request for a reference to process.
- * @param  {Express.Response} res The response to finalize.
- */
-function processReferenceRequest(req, res) {
-  var referer = url.parse(req.header('Referer'));
-  
-  // Regex for parsing e.g.
-  //    'http://www.markdown.com'
-  // from
-  //    'http://<host>/?url=http://www.markdown.com/markdown_sample.md'
-  var baseUrl = /\/\?url=(.+)(?:\/.+\.md)$/gi.exec(referer.path)[1];
-  
-  if (baseUrl) {
-    var resourceUrl = baseUrl + req.path;
-    res.redirect(resourceUrl);
-  }
-  else {
-    sendMarkdownError(res, `Unable to parse the location of the Markdown from ${referer.path}.`);
-  }
-}
-
-/**
- * Finalizes the specified response by sending an error message that displays the usage of the appliction. 
+ * Redirects to the true location of the reference. Since references doesn't require Markdown
+ * parsing, the proxy don't have to process the request.
+ * @param {string} refererUrl The referer of the reference request.
+ * @param {string} requestPath The path of the reference request.
  * @param {Express.Response} res The response to finalize.
  */
-function processInvalidRequest(res) {
-  sendMarkdownError(res, 'Invalid request, the request must have the parameter [/?url=[url]](/?url=[url]) where `[url]` is the location of the markdown.');
+function redirectReference(refererUrl, requestPath, res) {
+  var referer = url.parse(refererUrl);
+  var referenceRedirectUrl = network.getReferenceRedirectUrl(referer.path, requestPath);
+  
+  res.redirect(referenceRedirectUrl);
 }
 
 /**
- * Finalizes the specified response with the specified error message.
+ * Responds 
+ * @param {Express.Response} res The response to finalize.
  */
-function sendMarkdownError(res, errorMessage) {
-  res.send(marked(`# Error \n${errorMessage}`));
+function showUsage(res) {
+  showError(res, 'Invalid request, the request must have the parameter [/?url=[url]](/?url=[url]) where `[url]` is the location of the Markdown.');
+}
+
+/**
+ * Responds with an error message.
+ */
+function showError(res, errorMessage) {
+  res.send(markdownParser.toHtml(`# Error \n${errorMessage}`));
 }
 
 /**
