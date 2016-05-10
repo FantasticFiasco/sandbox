@@ -15,8 +15,11 @@ var htmlFormat =
         '<!DOCTYPE html>\
         <html>\
             <head>\
+                <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/github-markdown-css/2.3.0/github-markdown.css">\
             </head>\
             <body>\
-                %s\
+                <article class="markdown-body">\
+                    %s\
+                <article>\
             </body>\
         </html>';
