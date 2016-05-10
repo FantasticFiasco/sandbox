@@ -10,6 +10,10 @@ module.exports = {
                 return callback(null, body);
             }
             
+            if (error) {
+                return callback(error);
+            }
+            
             return callback(response.statusCode + " " + response.statusMessage);
         });
     },

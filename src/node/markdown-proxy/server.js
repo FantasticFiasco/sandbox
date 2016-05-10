@@ -32,7 +32,7 @@ app.get('/*', function(req, res) {
 function requestMarkdown(url, res) {
   network.get(url, function(error, markdownText) {
     if (error) {
-      showError(res, `Reading Markdown failed due to: ${error}`);
+      showError(res, `Reading Markdown failed due to: _${error}_`);
     }
     else {
       res.send(markdownParser.toHtml(markdownText));
