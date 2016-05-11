@@ -1,7 +1,6 @@
 /// <reference path="typings/main.d.ts" />
 
 var app = require('express')();
-var url = require('url');
 var logger = require('./io/logger');
 var network = require('./io/network');
 var markdownParser = require('./markdown/parser');
