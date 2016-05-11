@@ -52,9 +52,7 @@ function requestMarkdown(url, res) {
  * @param {Express.Response} res The response to finalize.
  */
 function redirectReference(refererUrl, requestPath, res) {
-  var referer = url.parse(refererUrl);
-  var referenceRedirectUrl = network.getReferenceRedirectUrl(referer.path, requestPath);
-  
+  var referenceRedirectUrl = network.getReferenceRedirectUrl(refererUrl, requestPath);
   res.redirect(referenceRedirectUrl);
 }
 
