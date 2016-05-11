@@ -2,11 +2,23 @@
 
 var request = require('request');
 var url = require('url');
+var fs = require('fs');
+var config = require('./../configuration/config')
 
 module.exports = {
         
     get: function(url, callback) {
-        request(url, function(error, response, body) {
+        var options = {
+          url: url,
+          rejectUnauthorized: !config.acceptInvalidCertificates,
+          auth: {
+            user: config.username,
+            pass: config.password,
+            sendImmediately: false
+          }
+        };
+        
+        request(options, function(error, response, body) {
             if (!error && response.statusCode == 200) {
                 return callback(null, body);
             }
