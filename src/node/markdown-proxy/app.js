@@ -73,6 +73,6 @@ function showError(res, errorMessage) {
 /**
  * Start the web server.
  */
-app.listen(3000, function () {
-  console.log('Starting to listen for requests on port 3000');
+var server = app.listen(3000, function () {
+  console.log('Starting to listen for requests on port %s', server.address().port);
 });
