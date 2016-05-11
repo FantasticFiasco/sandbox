@@ -4,11 +4,15 @@ var app = require('express')();
 var url = require('url');
 var network = require('./network');
 var markdownParser = require('./markdownParser');
+var logger = require('./logger');
 
 /**
  * Express configuration that routes all incoming requests.
  */
 app.get('/*', function(req, res) {
+  
+  logger.log(req.connection.remoteAddress, req.url);
+    
   if (req.query.url) {
     // A request for a Markdown since the parameter 'url' has been specified
     requestMarkdown(req.query.url, res);
