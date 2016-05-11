@@ -1,3 +1,5 @@
+/// <reference path="../typings/main.d.ts" />
+
 var fs = require('fs');
 
 module.exports = {
