@@ -10,10 +10,11 @@ var markdownParser = require('./markdown/parser');
  * Express configuration that routes all incoming requests.
  */
 app.get('/*', function(req, res) {
+  
+  logger.log(req.connection.remoteAddress, req.url);
     
   if (req.query.url) {
     // A request for a Markdown since the parameter 'url' has been specified
-    logger.log(req.connection.remoteAddress, req.url);
     requestMarkdown(req.query.url, res);
   }
   else if (req.header('Referer')) {
