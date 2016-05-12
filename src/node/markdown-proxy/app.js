@@ -50,9 +50,9 @@ function requestMarkdown(url, res) {
  * @param {string} requestPath The path of the reference request.
  * @param {Express.Response} res The response to finalize.
  */
-function redirectReference(refererUrl, requestPath, res) {
-  var referenceRedirectUrl = network.getReferenceRedirectUrl(refererUrl, requestPath);
-  res.redirect(referenceRedirectUrl);
+function redirectReference(referer, requestPath, res) {
+  var redirectUrl = network.getReferenceRedirectUrl(referer, requestPath);
+  res.redirect(redirectUrl);
 }
 
 /**

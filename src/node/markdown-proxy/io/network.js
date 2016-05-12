@@ -26,14 +26,15 @@ module.exports = {
         });
     },
     
-    getReferenceRedirectUrl: function(refererUrl, referencePath) {
-        var referer = url.parse(refererUrl);
+    getReferenceRedirectUrl: function(referer, referencePath) {
+        var refererUrl = url.parse(referer, true);
+        var markdownUrl = refererUrl.query.url;
         
         // Regex for parsing e.g.
-        //    'http://www.markdown.com'
+        //    'http://www.markdown.com/sample'
         // from
-        //    '?url=http://www.markdown.com/markdown_sample.md'
-        var baseUrl = /\/\?url=(.+)(?:\/.+\.md)$/gi.exec(referer.path)[1];
+        //    'http://www.markdown.com/sample/markdown_sample.md'
+        var baseUrl = /(.+)(?:\/.+\.md)$/gi.exec(markdownUrl)[1];
         
         return baseUrl + referencePath;
     }
