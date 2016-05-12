@@ -4,7 +4,7 @@ This application will act as a proxy that will turn your Markdown into beautiful
 
 # Usage
 
-Navigate to [HOST/?url=URL](<host>/?url=<url>) where `HOST` is the deployment of the application and `URL` the location of the markdown.
+Navigate to [HOST/markdown-proxy/?url=URL](<host>/markdown-proxy/?url=<url>) where `HOST` is the deployment of the application and `URL` the location of the markdown.
 
 # Getting started
 
