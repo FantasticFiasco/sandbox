@@ -8,7 +8,7 @@ var markdownParser = require('./markdown/parser');
 /**
  * Express configuration that routes all incoming requests.
  */
-app.get('/*', function(req, res) {
+app.get('/markdown-proxy/*', function(req, res) {
   
   logger.log(req.connection.remoteAddress, req.url);
     
@@ -18,7 +18,7 @@ app.get('/*', function(req, res) {
   }
   else if (req.header('Referer')) {
     // A request for referenced file from the Markdown, e.g. a path of an image
-    redirectReference(req.header('Referer'), req.path, res);
+    redirectReference(req.header('Referer'), req.path.replace('/markdown-proxy', ''), res);
   }
   else {
     // Invalid request, show usage
