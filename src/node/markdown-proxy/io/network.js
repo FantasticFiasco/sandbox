@@ -10,12 +10,7 @@ module.exports = {
     get: function(url, callback) {
         var options = {
           url: url,
-          rejectUnauthorized: !config.acceptInvalidCertificates,
-          auth: {
-            user: config.username,
-            pass: config.password,
-            sendImmediately: false
-          }
+          rejectUnauthorized: !config.acceptInvalidCertificates
         };
         
         request(options, function(error, response, body) {
