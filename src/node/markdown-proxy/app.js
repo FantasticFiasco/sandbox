@@ -9,21 +9,21 @@ var markdownParser = require('./markdown/parser');
  * Express configuration that routes all incoming requests.
  */
 app.get('/markdown-proxy/*', function(req, res) {
-  
-  logger.log(req.connection.remoteAddress, req.url);
-    
-  if (req.query.url) {
-    // A request for a Markdown since the parameter 'url' has been specified
-    requestMarkdown(req.query.url, res);
-  }
-  else if (req.header('Referer')) {
-    // A request for referenced file from the Markdown, e.g. a path of an image
-    redirectReference(req.header('Referer'), req.path.replace('/markdown-proxy', ''), res);
-  }
-  else {
-    // Invalid request, show usage
-    showUsage(res);
-  }
+
+	logger.log(req.connection.remoteAddress, req.url);
+	
+	if (req.query.url) {
+		// A request for a Markdown since the parameter 'url' has been specified
+		requestMarkdown(req.query.url, res);
+	}
+	else if (req.header('Referer')) {
+		// A request for referenced file from the Markdown, e.g. a path of an image
+		redirectReference(req.header('Referer'), req.path.replace('/markdown-proxy', ''), res);
+	}
+	else {
+		// Invalid request, show usage
+		showUsage(res);
+	}
 });
 
 /**
@@ -33,14 +33,14 @@ app.get('/markdown-proxy/*', function(req, res) {
  * @param {Express.Response} res The response to finalize.
  */
 function requestMarkdown(url, res) {
-  network.get(url, function(error, markdownText) {
-    if (error) {
-      showError(res, `Reading Markdown failed due to: _${error}_`);
-    }
-    else {
-      res.send(markdownParser.toHtml(markdownText));
-    }
-  });
+	network.get(url, function(error, markdownText) {
+		if (error) {
+			showError(res, `Reading Markdown failed due to: _${error}_`);
+		}
+		else {
+			res.send(markdownParser.toHtml(markdownText));
+		}
+	});
 }
 
 /**
@@ -51,8 +51,8 @@ function requestMarkdown(url, res) {
  * @param {Express.Response} res The response to finalize.
  */
 function redirectReference(referer, requestPath, res) {
-  var redirectUrl = network.getReferenceRedirectUrl(referer, requestPath);
-  res.redirect(redirectUrl);
+	var redirectUrl = network.getReferenceRedirectUrl(referer, requestPath);
+	res.redirect(redirectUrl);
 }
 
 /**
@@ -60,19 +60,19 @@ function redirectReference(referer, requestPath, res) {
  * @param {Express.Response} res The response to finalize.
  */
 function showUsage(res) {
-  showError(res, 'Invalid request, the request must have the parameter [/?url=[url]](/?url=[url]) where `[url]` is the location of the Markdown.');
+	showError(res, 'Invalid request, the request must have the parameter [/?url=[url]](/?url=[url]) where `[url]` is the location of the Markdown.');
 }
 
 /**
  * Responds with an error message.
  */
 function showError(res, errorMessage) {
-  res.send(markdownParser.toHtml(`# Error \n${errorMessage}`));
+	res.send(markdownParser.toHtml(`# Error \n${errorMessage}`));
 }
 
 /**
  * Start the web server.
  */
 var server = app.listen(3000, function () {
-  console.log('Starting to listen for requests on port %s', server.address().port);
+	console.log('Starting to listen for requests on port %s', server.address().port);
 });
