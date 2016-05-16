@@ -4,7 +4,7 @@ var fs = require('fs');
 
 module.exports = {
 
-	log: function(client, url) {
+	log: (client, url) => {
 		var message = client + ',' + url + '\n';
 
 		fs.appendFile('logs.txt', message, (error) => {

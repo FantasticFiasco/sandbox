@@ -7,13 +7,13 @@ var config = require('./../configuration/config')
 
 module.exports = {
 
-	get: function(url, callback) {
+	get: (url, callback) => {
 		var options = {
 			url: url,
 			rejectUnauthorized: !config.acceptInvalidCertificates
     	};
 
-    	request(options, function(error, response, body) {
+    	request(options, (error, response, body) => {
 			if (!error && response.statusCode == 200) {
 				return callback(null, body);
 			}
@@ -26,7 +26,7 @@ module.exports = {
 		});
 	},
 
-	getReferenceRedirectUrl: function(referer, referencePath) {
+	getReferenceRedirectUrl: (referer, referencePath) => {
 		var refererUrl = url.parse(referer, true);
 		var markdownUrl = refererUrl.query.url;
 

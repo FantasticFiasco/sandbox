@@ -8,7 +8,7 @@ var markdownParser = require('./markdown/parser');
 /**
  * Express configuration that routes all incoming requests.
  */
-app.get('/markdown-proxy/*', function(req, res) {
+app.get('/markdown-proxy/*', (req, res) => {
 
 	logger.log(req.connection.remoteAddress, req.url);
 	
@@ -33,7 +33,7 @@ app.get('/markdown-proxy/*', function(req, res) {
  * @param {Express.Response} res The response to finalize.
  */
 function requestMarkdown(url, res) {
-	network.get(url, function(error, markdownText) {
+	network.get(url, (error, markdownText) => {
 		if (error) {
 			showError(res, `Reading Markdown failed due to: _${error}_`);
 		}
@@ -73,6 +73,6 @@ function showError(res, errorMessage) {
 /**
  * Start the web server.
  */
-var server = app.listen(3000, function () {
+var server = app.listen(3000, () => {
 	console.log('Starting to listen for requests on port %s', server.address().port);
 });

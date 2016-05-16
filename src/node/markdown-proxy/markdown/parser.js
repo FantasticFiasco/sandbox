@@ -18,7 +18,7 @@ var htmlFormat =
 
 module.exports = {
 
-	toHtml: function(markdownText) {
+	toHtml: (markdownText) => {
 		var content = marked(markdownText);
 		return util.format(htmlFormat, content);
 	}
