@@ -8,6 +8,9 @@
 *.suo
 *.user
 
+# .NET Core files
+project.lock.json
+
 # GhostDoc
 *.GhostDoc.xml
 
