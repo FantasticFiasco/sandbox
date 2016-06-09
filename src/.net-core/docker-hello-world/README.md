@@ -13,3 +13,18 @@ Run application
 ```
 dotnet run
 ```
+
+Publish application
+```
+dotnet publish
+```
+
+Build Docker container
+```
+docker build -t hello-world .
+```
+
+Run Docker container
+```
+docker run -it -p 5000:5000 hello-world
+```
