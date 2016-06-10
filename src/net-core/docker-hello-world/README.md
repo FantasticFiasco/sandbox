@@ -26,5 +26,5 @@ docker build -t hello-world .
 
 Run Docker container
 ```
-docker run -it -p 5000:5000 hello-world
+docker run -it -p 80:80 hello-world
 ```

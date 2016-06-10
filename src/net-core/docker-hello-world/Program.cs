@@ -8,7 +8,7 @@ namespace NetCoreOnDocker
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://*:5000/")
+                .UseUrls("http://*:80/")
                 .UseStartup<Startup>()
                 .Build();
 
