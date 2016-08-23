@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 	title = 'Customer App';
 	name = 'Ward';
-	wardsColor = 'blue'
+	wardsColor = 'blue';
 
 	changeSuitColor() {
 		this.wardsColor = this.wardsColor === 'blue' ? 'red' : 'blue';
