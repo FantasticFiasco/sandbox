@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 const URL_CUSTOMER = 'app/customers.json';
 
@@ -13,11 +13,10 @@ export class CustomerService {
 	getCustomers() {
 		return this._http.get(URL_CUSTOMER)
 			.map((response: Response) => response.json())
-			.catch(this._handleError);
-	}
-
-	_handleError(err: any) {
-		console.log(err);
-		return Observable.throw(err);
+			.toPromise()
+			.catch((err: any) => {
+				console.log(err);
+				return Promise.reject(err);
+			});
 	}
 }
