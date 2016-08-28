@@ -1,0 +1,14 @@
+{
+  "name": "ambient-declarations",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ambient-declarations.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mattias Kindborg",
+  "license": "ISC",
+  "dependencies": {
+    "knockout": "^3.4.0"
+  }
+}
