@@ -1,0 +1,9 @@
+﻿{
+  "$schema": "http://schemastore.org/schemas/json/webjob-publish-settings.json",
+  "webJobName": "AccountsAuditConsumer",
+  "startTime": "2016-05-09T06:00:00+00:00",
+  "endTime": "2016-05-10T19:00:00+00:00",
+  "jobRecurrenceFrequency": "Minute",
+  "interval": 15,
+  "runMode": "Scheduled"
+}
