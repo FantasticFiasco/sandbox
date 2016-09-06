@@ -1,11 +1,12 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
 
-namespace StandardQueue
+// ReSharper disable once CheckNamespace
+namespace System
 {
-	internal static class Extensions
+	public static class Extensions
 	{
-		internal static byte[] Serialize(this object value)
+		public static byte[] Serialize(this object value)
 		{
 			if (value == null)
 			{
@@ -16,7 +17,7 @@ namespace StandardQueue
 			return Encoding.Default.GetBytes(json);
 		}
 
-		internal static T Deserialize<T>(this byte[] value)
+		public static T Deserialize<T>(this byte[] value)
 		{
 			if (value == null)
 			{
