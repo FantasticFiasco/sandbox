@@ -3,11 +3,11 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shared;
 
-namespace StandardQueue
+namespace WorkerQueue
 {
 	class Program
 	{
-		private static readonly string QueueName = "StandardQueue_Example";
+		private static readonly string QueueName = "WorkerQueue_Example";
 
 		private IConnection connection;
 		private IModel model;
@@ -65,11 +65,20 @@ namespace StandardQueue
 		{
 			Console.WriteLine("Receiving messages:");
 
+			model.BasicQos(
+				prefetchSize: 0,
+				prefetchCount: 1,
+				global: false);
+
 			var consumer = new EventingBasicConsumer(model);
 			consumer.Received += (sender, e) =>
 			{
 				var message = e.Body.Deserialize<Message>();
 				Console.WriteLine($"  {message.Text}");
+
+				model.BasicAck(
+					deliveryTag: e.DeliveryTag,
+					multiple: false);
 			};
 
 			model.BasicConsume(

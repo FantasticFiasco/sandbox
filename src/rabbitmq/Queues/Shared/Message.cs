@@ -1,4 +1,4 @@
-﻿namespace StandardQueue
+﻿namespace Shared
 {
 	public class Message
 	{
