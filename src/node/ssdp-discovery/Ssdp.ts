@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import {Socket, BindOptions, createSocket} from 'dgram';
+import {EventEmitter} from 'events';
 
-export class Ssdp {
+export class Ssdp extends EventEmitter {
 
 	private sockets: Socket[] = []; 
 
@@ -13,7 +14,7 @@ export class Ssdp {
 		'MX:3\r\n' +
 		'\r\n';
 
-	start(address: string, callback: any): void {
+	start(address: string): void {
 		const socket = createSocket({ type: 'udp4', reuseAddr: true });
 		this.sockets.push(socket);
 
@@ -22,9 +23,7 @@ export class Ssdp {
 	    });
 
 		socket.on('message', (message, remote) => {   
-        	if (callback != null) {
-				callback(message, remote);
-			}
+        	this.emit('message', {message, remote});
     	});
 
 		socket.on('error', error => {

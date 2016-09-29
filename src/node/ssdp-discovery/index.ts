@@ -7,11 +7,15 @@ const addresses = networkInterfaces.getAddresses();
 
 // Start listening for SSDP messages
 const ssdp = new Ssdp();
+
+ssdp.on('message', data => {
+	console.log(`[Reply from ${data.remote.address}:${data.remote.port}]`);
+	console.log('' + data.message);
+	console.log('\r\n');
+});
+
 addresses.forEach(address => {
-  ssdp.start(address, (message, remote) => {
-     console.log(`Reply from ${remote.address}:${remote.port}`);
-     console.log('Message:' + message);
-   });
+	ssdp.start(address);
 });
 
 // Trigger a search
