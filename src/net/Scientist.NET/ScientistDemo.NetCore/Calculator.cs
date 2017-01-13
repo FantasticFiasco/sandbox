@@ -10,20 +10,23 @@ namespace ScientistDemo.Net
         {
             this.delay = delay;
         }
-
-
+		
         public int Add(int x, int y)
         {
-            Thread.Sleep(delay);
-
-            return x + y;
+			using (new LogContext($"Add with delay {delay}"))
+			{
+				Thread.Sleep(delay);
+				return x + y;
+			}
         }
 
         public int Subtract(int x, int y)
         {
-            Thread.Sleep(delay);
-
-            return x - y;
+			using (new LogContext($"Subtract with delay {delay}"))
+			{
+				Thread.Sleep(delay);
+				return x - y;
+			}
         }
     }
 }

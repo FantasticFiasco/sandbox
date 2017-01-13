@@ -4,30 +4,30 @@ namespace ScientistDemo.Net
 {
     class CalculatorExperiment : ICalculator
     {
-        private readonly ICalculator current;
-        private readonly ICalculator candidate;
+        private readonly ICalculator reference;
+        private readonly ICalculator observation;
 
         public CalculatorExperiment()
         {
-            current = new Calculator(1000);
-            candidate = new Calculator(200);
+            reference = new Calculator(1000);
+            observation = new Calculator(200);
         }
 
         public int Add(int x, int y)
         {
-            return Scientist.Science<int>("add", experiment =>
+            return Scientist.Science<int>("calculator.add", experiment =>
             {
-                experiment.Use(() => current.Add(x, y));
-                experiment.Try(() => candidate.Add(x, y));
+                experiment.Use(() => reference.Add(x, y));
+                experiment.Try(() => observation.Add(x, y));
             });
         }
 
         public int Subtract(int x, int y)
         {
-            return Scientist.Science<int>("subtract", experiment =>
+            return Scientist.Science<int>("calculator.subtract", experiment =>
             {
-                experiment.Use(() => current.Subtract(x, y));
-                experiment.Try(() => candidate.Subtract(x, y));
+                experiment.Use(() => reference.Subtract(x, y));
+                experiment.Try(() => observation.Subtract(x, y));
             });
         }
     }

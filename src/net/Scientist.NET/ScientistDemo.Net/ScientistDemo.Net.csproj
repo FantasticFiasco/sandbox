@@ -55,6 +55,9 @@
     <Compile Include="..\ScientistDemo.NetCore\ICalculator.cs">
       <Link>ICalculator.cs</Link>
     </Compile>
+    <Compile Include="..\ScientistDemo.NetCore\LogContext.cs">
+      <Link>LogContext.cs</Link>
+    </Compile>
     <Compile Include="..\ScientistDemo.NetCore\Program.cs">
       <Link>Program.cs</Link>
     </Compile>
