@@ -1,3 +1,7 @@
+---
+title: reveal.js
+---
+
 # reveal.js
 
 The HTML presentation framework
