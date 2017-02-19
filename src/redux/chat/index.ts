@@ -2,6 +2,7 @@ import { Action } from './action';
 import { AddMessageAction } from './add-message-action';
 import { AppState } from './app-state';
 import { DeleteMessageAction } from './delete-message-action';
+import { MessageActions } from './message-actions';
 import { Reducer } from './Reducer';
 import { Store } from './store';
 
@@ -26,20 +27,11 @@ let reducer: Reducer<AppState> =
 const store = new Store<AppState>(reducer, { messages: [] });
 console.log(store.getState()); // -> { messages: [] }
 
-store.dispatch({
-  type: 'ADD_MESSAGE',
-  message: 'Would you say the fringe was made of silk?'
-} as AddMessageAction);
+store.dispatch(MessageActions.addMessage('Would you say the fringe was made of silk?'));
 
-store.dispatch({
-  type: 'ADD_MESSAGE',
-  message: 'Wouldnt have no other kind but silk'
-} as AddMessageAction);
+store.dispatch(MessageActions.addMessage('Wouldnt have no other kind but silk'));
 
-store.dispatch({
-  type: 'ADD_MESSAGE',
-  message: 'Has it really got a team of snow white horses?'
-} as AddMessageAction);
+store.dispatch(MessageActions.addMessage('Has it really got a team of snow white horses?'));
 
 console.log(store.getState());
 // ->
