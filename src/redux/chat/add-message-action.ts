@@ -1,4 +1,4 @@
-import { Action } from './action';
+import { Action } from 'redux';
 
 export interface AddMessageAction extends Action {
   message: string;

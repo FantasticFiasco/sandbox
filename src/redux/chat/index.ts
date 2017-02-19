@@ -1,13 +1,19 @@
-import { Action } from './action';
+import {
+  Action,
+  Reducer,
+  Store,
+  createStore
+} from 'redux';
+
 import { AddMessageAction } from './add-message-action';
 import { AppState } from './app-state';
 import { DeleteMessageAction } from './delete-message-action';
 import { MessageActions } from './message-actions';
-import { Reducer } from './Reducer';
-import { Store } from './store';
 
-let reducer: Reducer<AppState> =
-  (state: AppState, action: Action): AppState => {
+const initialState: AppState = { messages: [] };
+
+const reducer: Reducer<AppState> =
+  (state: AppState = initialState, action: Action) => {
     switch (action.type) {
       case 'ADD_MESSAGE':
         return {
@@ -21,10 +27,12 @@ let reducer: Reducer<AppState> =
             ...state.messages.slice(index + 1, state.messages.length)
           ]
         }
+      default:
+        return state;
     }
   };
 
-const store = new Store<AppState>(reducer, { messages: [] });
+const store: Store<AppState> = createStore<AppState>(reducer);
 console.log(store.getState()); // -> { messages: [] }
 
 store.dispatch(MessageActions.addMessage('Would you say the fringe was made of silk?'));
