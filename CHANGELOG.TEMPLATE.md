@@ -26,6 +26,6 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 * Is for any bug fixes
 
-### :policaman: Security
+### :policeman: Security
 
 * Is in case of vulnerabilities
