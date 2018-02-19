@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
+## :gem: [0.0.1] - 2000-01-01
+
 ### :zap: Added
 
 * Is for new features
@@ -22,7 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 * Is for now removed features
 
-### :fire: Fixed
+### :syringe: Fixed
 
 * Is for any bug fixes
 
