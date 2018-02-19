@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/) and is followi
 
 ## Unreleased
 
-## :gem: [0.0.1] - 2000-01-01
+## [0.0.1] - 2000-01-01
 
 ### :zap: Added
 
