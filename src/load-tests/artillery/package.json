@@ -1,0 +1,31 @@
+{
+  "name": "artillery-examples",
+  "version": "1.0.0",
+  "description": "Examples using the load testing framework Artillery.",
+  "keywords": [
+    "artillery",
+    "examples"
+  ],
+  "homepage": "https://github.com/FantasticFiasco/sandbox",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FantasticFiasco/sandbox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FantasticFiasco/sandbox/issues"
+  },
+  "author": "Mattias Kindborg <mattias.kindborg@gmail.com> (https://twitter.com/FantasticFiasco)",
+  "main": "server.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./server.js",
+    "hello": "artillery run --output hello.result.json hello.yml",
+    "basic-concepts": "artillery run --output basic-concepts.result.json basic-concepts.yml"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "artillery": "^1.6.0-14"
+  }
+}
