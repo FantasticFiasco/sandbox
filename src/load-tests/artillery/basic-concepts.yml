@@ -1,5 +1,5 @@
 config:
-  target: "https://staging1.local"
+  target: "http://localhost:3000"
   phases:
     - duration: 60
       arrivalRate: 5

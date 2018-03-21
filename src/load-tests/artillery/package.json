@@ -15,11 +15,15 @@
     "url": "https://github.com/FantasticFiasco/sandbox/issues"
   },
   "author": "Mattias Kindborg <mattias.kindborg@gmail.com> (https://twitter.com/FantasticFiasco)",
-  "main": "index.js",
+  "main": "server.js",
   "license": "MIT",
   "scripts": {
-    "hello": "artillery run hello.yml",
-    "basic-concepts": "artillery run basic-concepts.yml"
+    "start": "node ./server.js",
+    "hello": "artillery run --output hello.result.json hello.yml",
+    "basic-concepts": "artillery run --output basic-concepts.result.json basic-concepts.yml"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "artillery": "^1.6.0-14"
