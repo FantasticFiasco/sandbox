@@ -15,13 +15,13 @@ app.post('/search', (req, res) => {
 app.get('/details/:id', (req, res) => {
     console.log(`details - product with id '${req.params.id}'`);
     
-    res.status(200).json({});
+    res.status(200).json({ id: req.params.id });
 });
 
 app.post('/cart', (req, res) => {
-    console.log(`cart - add product with id '${req.body.id}'`);
+    console.log(`cart - add product with id '${req.body.productId}'`);
 
-    res.status(201).json({ id: req.params.id });
+    res.status(201).json({ id: req.body.productId });
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));

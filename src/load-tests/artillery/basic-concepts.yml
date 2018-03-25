@@ -11,14 +11,15 @@ config:
   payload:
     path: "keywords.csv"
     fields:
-      - "keywords"
+      - "keyword"
 
 scenarios:
   - name: "Search and buy"
     flow:
       - post:
           url: "/search"
-          body: "kw={{ keywords }}"
+          json:
+            kw: "{{ keyword }}"
           capture:
             json: "$.results[0].id"
             as: "id"
