@@ -1,3 +1,6 @@
+# Run load test with the following command:
+# locust --host=http://localhost:3000
+
 from locust import HttpLocust, TaskSet, task
 
 class UserBehavior(TaskSet):
@@ -10,10 +13,10 @@ class UserBehavior(TaskSet):
         self.logout()
 
     def login(self):
-        self.client.post("/login", {"username":"ellen_key", "password":"education"})
+        self.client.post("/login", json={"username":"ellen_key", "password":"education"})
 
     def logout(self):
-        self.client.post("/logout", {"username":"ellen_key", "password":"education"})
+        self.client.post("/logout", json={"username":"ellen_key", "password":"education"})
 
     @task(2)
     def index(self):

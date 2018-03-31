@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
+app.use(validate);
 
 app.post('/search', (req, res) => {
     console.log(`search - keyword '${req.body.kw}'`);
@@ -27,3 +28,11 @@ app.post('/cart', (req, res) => {
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
+
+function validate(req, res, next) {
+    if (req.method === 'POST' && req.header('content-type') !== 'application/json') {
+        res.sendStatus(415);
+    } else {
+        next();
+    }
+}

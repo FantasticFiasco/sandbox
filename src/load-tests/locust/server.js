@@ -2,29 +2,38 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
+app.use(validate);
 
 app.post('/login', (req, res) => {
-    console.log(`login - user '${req.body.username}'`);
+    console.log(`login - ${req.body.username}/${req.body.password}`);
 
-    res.status(200);
+    res.send(`Hello ${req.body.username}!`);
 });
 
 app.post('/logout', (req, res) => {
-    console.log(`logout - user '${req.body.username}'`);
+    console.log(`logout - ${req.body.username}/${req.body.password}`);
 
-    res.status(200);
+    res.send(`Goodbye ${req.body.username}!`);
 });
 
-app.get('/index', (req, res) => {
+app.get('/', (req, res) => {
     console.log('index');
     
-    res.status(200);
+    res.send('<html><body><p>Index</p></body></html>');
 });
 
 app.get('/profile', (req, res) => {
     console.log('profile');
     
-    res.status(200);
+    res.send('<html><body><p>Profile</p></body></html>');
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
+
+function validate(req, res, next) {
+    if (req.method === 'POST' && req.header('content-type') !== 'application/json') {
+        res.sendStatus(415);
+    } else {
+        next();
+    }
+}
