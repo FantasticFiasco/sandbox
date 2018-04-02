@@ -26,6 +26,9 @@ project.lock.json
 ## npm Packages
 **/node_modules/*
 
+## Yarn error files
+yarn-error.log
+
 ## bower Packages
 **/bower_components/*
 

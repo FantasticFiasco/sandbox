@@ -1,0 +1,14 @@
+{
+  "name": "egg-timer",
+  "version": "1.0.0",
+  "description": "Node implementation of a egg timer.",
+  "main": "index.js",
+  "repository": "https://github.com/FantasticFiasco/sandbox.git",
+  "author": "Mattias Kindborg",
+  "license": "MIT",
+  "dependencies": {
+    "image-to-ascii": "3.0.11",
+    "play-sound": "^1.1.2",
+    "underscore": "1.8.3"
+  }
+}
