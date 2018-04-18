@@ -1,14 +1,11 @@
 const imageToAscii = require('image-to-ascii');
-var player = require('play-sound')(opts = {});
+const player = require('play-sound')(opts = {});
+
 
 var antal_sekunder = 5;
 
-function skriv_ut(text) {
-    console.log(text);
-}
-
 function skriv_ut_ägg_klocka() {
-    imageToAscii('./egg-timer.jpg', { size: { height: 20 }, bg: true }, (err, converted) => {
+    imageToAscii('./egg-timer.png', { size: { height: 20 }, bg: true }, (err, converted) => {
         console.log(converted);
     });
 }
@@ -34,7 +31,12 @@ function antal_sekunder_är_större_än_0() {
 }
 
 function skriv_ut_antal_sekunder_kvar() {
-    console.log(`${antal_sekunder} sekunder kvar`);
+    if (antal_sekunder === 1) {
+        console.log(`${antal_sekunder} sekund kvar`);
+    }
+    else {
+        console.log(`${antal_sekunder} sekunder kvar`);
+    }
 }
 
 function räkna_ner_antal_sekunder() {
