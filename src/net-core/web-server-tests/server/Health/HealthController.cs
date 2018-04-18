@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Server.Controllers
+namespace Server.Health
 {
     [Route("health")]
     public class HealthController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get()
+        public void Get()
         {
-            return NoContent();
         }
     }
 }
