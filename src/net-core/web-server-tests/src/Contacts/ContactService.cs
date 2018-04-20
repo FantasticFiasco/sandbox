@@ -28,11 +28,17 @@ namespace Server.Contacts
 
         public Contact Get(int id)
         {
-            return contacts[id];
+            contacts.TryGetValue(id, out var contact);
+            return contact;
         }
 
         public Contact Update(int id, string firstName, string surname)
         {
+            if (!contacts.ContainsKey(id))
+            {
+                return null;
+            }
+
             contacts[id] = new Contact(id, firstName, surname);
 
             return contacts[id];

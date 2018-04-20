@@ -18,6 +18,11 @@ namespace Integration
 
         protected HttpClient Client { get; }
 
+        protected T Resolve<T>()
+        {
+            return (T)Server.Host.Services.GetService(typeof(T));
+        }
+
         public void Dispose()
         {
             Server?.Dispose();

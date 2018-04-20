@@ -15,13 +15,35 @@ namespace Integration.Contacts
         [InlineData(10)]
         public async Task ReturnOk(int contactCount)
         {
-            throw new NotImplementedException();
+            // Arrange
+            var contactService = Resolve<ContactService>();
+
+            for (int i = 0; i < contactCount; i++)
+            {
+                contactService.Add($"John {i}", "Doe");
+            }
+
+            // Act
+            var response = await Client.GetAsync("/contacts");
+            var contacts = await response.Content.ReadAsJsonAsync<ContactResponse[]>();
+
+            // Assert
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
+            contacts.Length.ShouldBe(contactCount);
         }
 
         [Fact]
         public async Task ReturnOkGivenNoContacts()
         {
-            throw new NotImplementedException();
+            // Act
+            var response = await Client.GetAsync("/contacts");
+            var contacts = await response.Content.ReadAsJsonAsync<ContactResponse[]>();
+
+            // Assert
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
+            contacts.ShouldBeEmpty();
         }
     }
 }

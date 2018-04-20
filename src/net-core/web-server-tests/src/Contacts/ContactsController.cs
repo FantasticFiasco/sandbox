@@ -31,25 +31,41 @@ namespace Server.Contacts
         }
 
         [HttpGet("{id}")]
-        public ContactResponse Get(int id)
+        public IActionResult Get(int id)
         {
             var contact = service.Get(id);
+            if (contact == null)
+            {
+                return NotFound();
+            }
 
-            return new ContactResponse(contact);
+            return Ok(new ContactResponse(contact));
         }
 
         [HttpPut("{id}")]
-        public ContactResponse Put(int id, [FromBody] ContactRequest body)
+        public IActionResult Put(int id, [FromBody] ContactRequest body)
         {
             var contact = service.Update(id, body.FirstName, body.Surname);
 
-            return new ContactResponse(contact);
+            if (contact == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new ContactResponse(contact));
         }
 
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            service.Remove(id);
+            bool success = service.Remove(id);
+
+            if (!success)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

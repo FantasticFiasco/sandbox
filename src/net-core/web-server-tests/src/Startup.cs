@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Contacts;
+using Server.Middleware;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Server
@@ -21,7 +22,7 @@ namespace Server
         {
             services.AddSingleton<ContactService>();
 
-            services.AddMvc();
+            services.AddMvc(options => options.Filters.Add<ModelValidationFilter>());
 
             // Configure OpenAPI
             services.AddSwaggerGen(options =>

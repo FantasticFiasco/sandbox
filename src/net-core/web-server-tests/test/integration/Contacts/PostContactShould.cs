@@ -23,7 +23,7 @@ namespace Integration.Contacts
             // Assert
             response.StatusCode.ShouldBe(HttpStatusCode.Created);
             response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
-            response.Content.Headers.ContentLocation.PathAndQuery.ShouldBe($"/contacts/{createdContact.Id}");
+            response.Headers.Location.ToString().ShouldBe($"/contacts/{createdContact.Id}");
             createdContact.FirstName.ShouldBe(contact.FirstName);
             createdContact.Surname.ShouldBe(contact.Surname);
         }
@@ -44,7 +44,14 @@ namespace Integration.Contacts
         [Fact]
         public async Task ReturnBadRequestGivenMissingSurname()
         {
-            throw new NotImplementedException();
+            // Arrange
+            var contact = new ContactRequest("John", null);
+
+            // Act
+            var response = await Client.PostAsJsonAsync("/contacts", contact);
+
+            // Assert
+            response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
     }
 }
