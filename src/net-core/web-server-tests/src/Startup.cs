@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Contacts;
-using Server.Middleware;
+using Server.Shared.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Server

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Server.Middleware
+namespace Server.Shared.Filters
 {
     public class ModelValidationFilter : ActionFilterAttribute
     {
