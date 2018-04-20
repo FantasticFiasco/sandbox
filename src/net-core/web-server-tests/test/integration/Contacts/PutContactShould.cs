@@ -106,6 +106,22 @@ namespace Integration.Contacts
         }
 
         [Fact]
+        public async Task ReturnBadRequestGivenMissingFirstNameAndSurname()
+        {
+            // Arrange
+            var contactService = Resolve<ContactService>();
+            var createdContact = contactService.Add("John", "Doe");
+
+            var contactToUpdate = new ContactRequest(null, null);
+
+            // Act
+            var response = await Client.PutAsJsonAsync($"contacts/{createdContact.Id}", contactToUpdate);
+
+            // Assert
+            response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
         public async Task ReturnNotFoundGivenUnknownId()
         {
             // Arrange
