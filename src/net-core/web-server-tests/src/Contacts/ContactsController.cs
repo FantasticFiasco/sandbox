@@ -15,11 +15,11 @@ namespace Server.Contacts
         }
 
         [HttpPost]
-        public ContactResponse Post([FromBody] ContactRequest body)
+        public IActionResult Post([FromBody] ContactRequest body)
         {
             var contact = service.Add(body.FirstName, body.Surname);
 
-            return new ContactResponse(contact);
+            return Created($"/contacts/{contact.Id}", new ContactResponse(contact));
         }
 
         [HttpGet]

@@ -10,9 +10,11 @@ namespace Server
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder Builder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            Builder(args).Build();
     }
 }

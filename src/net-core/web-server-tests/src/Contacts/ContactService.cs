@@ -45,6 +45,11 @@ namespace Server.Contacts
 
         private int NextId()
         {
+            if (!contacts.Any())
+            {
+                return 1;
+            }
+
             return contacts.Values.Max(contact => contact.Id) + 1;
         }
     }
