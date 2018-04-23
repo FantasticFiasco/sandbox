@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Contacts;
-using Server.Shared.Filters;
+using Server.Contacts.Private;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Server
@@ -20,9 +20,9 @@ namespace Server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ContactService>();
+            services.AddSingleton<IContactService, ContactService>();
 
-            services.AddMvc(options => options.Filters.Add<ModelValidationFilter>());
+            services.AddMvc();
 
             // Configure OpenAPI
             services.AddSwaggerGen(options =>

@@ -7,9 +7,9 @@ namespace Server.Contacts
     [Route("contacts")]
     public class ContactsController : Controller
     {
-        private readonly ContactService service;
+        private readonly IContactService service;
 
-        public ContactsController(ContactService service)
+        public ContactsController(IContactService service)
         {
             this.service = service;
         }
@@ -17,17 +17,24 @@ namespace Server.Contacts
         [HttpPost]
         public IActionResult Post([FromBody] ContactRequest body)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var contact = service.Add(body.FirstName, body.Surname);
 
             return Created($"/contacts/{contact.Id}", new ContactResponse(contact));
         }
 
         [HttpGet]
-        public IEnumerable<ContactResponse> Get()
+        public IActionResult Get()
         {
             var contacts = service.GetAll();
 
-            return contacts.Select(contact => new ContactResponse(contact));
+            return Ok(contacts
+                .Select(contact => new ContactResponse(contact))
+                .ToArray());
         }
 
         [HttpGet("{id}")]
@@ -45,6 +52,11 @@ namespace Server.Contacts
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ContactRequest body)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
             var contact = service.Update(id, body.FirstName, body.Surname);
 
             if (contact == null)

@@ -7,9 +7,9 @@ namespace Server.Echo
     {
         [HttpGet]
         [Route("{text}")]
-        public string Get(string text)
+        public IActionResult Get(string text)
         {
-            return text;
+            return Ok(text);
         }
     }
 }

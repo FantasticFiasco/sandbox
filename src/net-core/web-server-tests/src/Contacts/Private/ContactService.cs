@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Server.Contacts
+namespace Server.Contacts.Private
 {
-    public class ContactService
+    public class ContactService : IContactService
     {
         private readonly IDictionary<int, Contact> contacts;
 

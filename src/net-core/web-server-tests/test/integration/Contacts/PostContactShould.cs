@@ -17,11 +17,12 @@ namespace Integration.Contacts
 
             // Act
             var response = await Client.PostAsJsonAsync("/contacts", contact);
-            var createdContact = await response.Content.ReadAsJsonAsync<ContactResponse>();
 
             // Assert
             response.StatusCode.ShouldBe(HttpStatusCode.Created);
             response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
+
+            var createdContact = await response.Content.ReadAsJsonAsync<ContactResponse>();
             response.Headers.Location.ToString().ShouldBe($"/contacts/{createdContact.Id}");
             createdContact.Id.ShouldNotBe(0);
             createdContact.FirstName.ShouldBe(contact.FirstName);

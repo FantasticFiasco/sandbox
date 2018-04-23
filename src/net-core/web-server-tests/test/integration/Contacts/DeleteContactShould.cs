@@ -8,11 +8,18 @@ namespace Integration.Contacts
 {
     public class DeleteContactShould : TestBase
     {
+        private readonly IContactService contactService;
+
+        public DeleteContactShould()
+            : base()
+        {
+            contactService = Resolve<IContactService>();
+        }
+
         [Fact]
         public async Task ReturnNoContent()
         {
             // Arrange
-            var contactService = Resolve<ContactService>();
             var createdContact = contactService.Add("John", "Doe");
 
             // Act

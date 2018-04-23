@@ -9,20 +9,28 @@ namespace Integration.Contacts
 {
     public class GetContactShould : TestBase
     {
+        private readonly IContactService contactService;
+
+        public GetContactShould()
+            : base()
+        {
+            contactService = Resolve<IContactService>();
+        }
+
         [Fact]
         public async Task ReturnOk()
         {
             // Arrange
-            var contactService = Resolve<ContactService>();
             var createdContact = contactService.Add("John", "Doe");
 
             // Act
             var response = await Client.GetAsync($"/contacts/{createdContact.Id}");
-            var contact = await response.Content.ReadAsJsonAsync<ContactResponse>();
 
             // Assert
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
+
+            var contact = await response.Content.ReadAsJsonAsync<ContactResponse>();
             contact.Id.ShouldBe(createdContact.Id);
             contact.FirstName.ShouldBe(createdContact.FirstName);
             contact.Surname.ShouldBe(createdContact.Surname);
