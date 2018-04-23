@@ -1,10 +1,6 @@
-using System;
-using System.Linq;
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Server.Contacts;
-using Server.Echo;
 using Shouldly;
 using Xunit;
 

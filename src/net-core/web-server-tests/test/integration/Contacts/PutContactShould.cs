@@ -12,7 +12,6 @@ namespace Integration.Contacts
         private readonly IContactService contactService;
 
         public PutContactShould()
-            : base()
         {
             contactService = Resolve<IContactService>();
         }

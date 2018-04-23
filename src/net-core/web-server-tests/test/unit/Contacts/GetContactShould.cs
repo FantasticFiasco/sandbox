@@ -1,5 +1,3 @@
-using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Server.Contacts;
@@ -14,7 +12,6 @@ namespace Unit.Contacts
         private readonly ContactsController controller;
 
         public GetContactShould()
-            : base()
         {
             contactService = new Mock<IContactService>();
             controller = new ContactsController(contactService.Object);
