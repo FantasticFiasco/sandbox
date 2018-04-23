@@ -7,6 +7,7 @@ namespace Server.Echo
     {
         [HttpGet]
         [Route("{text}")]
+        [ProducesResponseType(200)]
         public IActionResult Get(string text)
         {
             return Ok(text);

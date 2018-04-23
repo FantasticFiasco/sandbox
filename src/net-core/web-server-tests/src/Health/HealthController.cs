@@ -6,6 +6,7 @@ namespace Server.Health
     public class HealthController : ControllerBase
     {
         [HttpGet]
+        [ProducesResponseType(200)]
         public IActionResult Get()
         {
             return NoContent();
