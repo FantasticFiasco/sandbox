@@ -20,19 +20,19 @@ namespace Integration.Contacts
         public async Task ReturnOk()
         {
             // Arrange
-            var createdContact = contactService.Add("John", "Doe");
+            var contact = contactService.Add("John", "Doe");
 
             // Act
-            var response = await Client.GetAsync($"/contacts/{createdContact.Id}");
+            var response = await Client.GetAsync($"/contacts/{contact.Id}");
 
             // Assert
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
 
-            var contact = await response.Content.ReadAsJsonAsync<ContactResponse>();
-            contact.Id.ShouldBe(createdContact.Id);
-            contact.FirstName.ShouldBe(createdContact.FirstName);
-            contact.Surname.ShouldBe(createdContact.Surname);
+            var contactResponse = await response.Content.ReadAsJsonAsync<ContactResponse>();
+            contactResponse.Id.ShouldBe(contact.Id);
+            contactResponse.FirstName.ShouldBe(contact.FirstName);
+            contactResponse.Surname.ShouldBe(contact.Surname);
         }
 
         [Fact]

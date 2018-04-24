@@ -48,8 +48,8 @@ namespace Integration.Contacts
             response.StatusCode.ShouldBe(HttpStatusCode.OK);
             response.Content.Headers.ContentType.MediaType.ShouldBe("application/json");
 
-            var contacts = await response.Content.ReadAsJsonAsync<ContactResponse[]>();
-            contacts.ShouldBeEmpty();
+            var contactsResponse = await response.Content.ReadAsJsonAsync<ContactResponse[]>();
+            contactsResponse.ShouldBeEmpty();
         }
     }
 }

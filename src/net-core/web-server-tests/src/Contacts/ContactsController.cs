@@ -55,6 +55,7 @@ namespace Server.Contacts
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(ContactResponse), 200)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public IActionResult Put(int id, [FromBody] ContactRequest body)
         {

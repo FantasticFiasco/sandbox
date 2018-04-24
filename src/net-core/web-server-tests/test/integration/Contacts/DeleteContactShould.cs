@@ -19,10 +19,10 @@ namespace Integration.Contacts
         public async Task ReturnNoContent()
         {
             // Arrange
-            var createdContact = contactService.Add("John", "Doe");
+            var contact = contactService.Add("John", "Doe");
 
             // Act
-            var response = await Client.DeleteAsync($"contacts/{createdContact.Id}");
+            var response = await Client.DeleteAsync($"contacts/{contact.Id}");
 
             // Assert
             response.StatusCode.ShouldBe(HttpStatusCode.NoContent);

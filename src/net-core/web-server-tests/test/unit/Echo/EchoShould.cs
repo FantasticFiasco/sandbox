@@ -22,9 +22,9 @@ namespace Unit.Health
             var result = controller.Get("foo");
 
             // Assert
-            var ok = result.ShouldBeOfType<OkObjectResult>();
-            ok.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-            ok.Value.ShouldBe("foo");
+            var okResult = result.ShouldBeOfType<OkObjectResult>();
+            okResult.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            okResult.Value.ShouldBe("foo");
         }
 
         [Fact]
@@ -34,9 +34,9 @@ namespace Unit.Health
             var result = controller.Get("foo-bar");
 
             // Assert
-            var ok = result.ShouldBeOfType<OkObjectResult>();
-            ok.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-            ok.Value.ShouldBe("foo-bar");
+            var okResult = result.ShouldBeOfType<OkObjectResult>();
+            okResult.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            okResult.Value.ShouldBe("foo-bar");
         }
     }
 }
