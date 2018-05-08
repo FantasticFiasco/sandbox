@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+
+  sample:
+    build:
+      context: src/
+    environment:
+      DB_HOST: postgres
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    restart: on-failure
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
