@@ -1,33 +1,33 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Dapper;
 using Npgsql;
 
 namespace FileSystem
 {
     public class Repository
     {
-        public Node[] GetRootNodes(NpgsqlConnection connection)
+        public IEnumerable<Node> GetNodesOnLevel(NpgsqlConnection connection, int level)
         {
-            var nodes = new List<Node>();
-
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "SELECT id, name, path::TEXT from nodes WHERE nlevel(path) = 1";
-                var reader = command.ExecuteReader();
-
-                while (reader.Read())
+            return connection.Query<Node>(
+                @"SELECT id, name, path::TEXT
+                FROM node
+                WHERE nlevel(path) = @Level",
+                new
                 {
-                    var node = new Node
-                    {
-                        Id = reader.GetString(0),
-                        Name = reader.GetString(1),
-                        Path = reader.GetString(2)
-                    };
+                    level = level
+                });
+        }
 
-                    nodes.Add(node);
-                }
-            }
-
-            return nodes.ToArray();
+        public IEnumerable<Node> GetDescendants(NpgsqlConnection connection, Node parent)
+        {
+            return connection
+                .Query<Node>(
+                    $@"SELECT id, name, path::TEXT
+                    FROM node
+                    WHERE '{parent.Path}' @> path")
+                .Where(node => node.Id != parent.Id);
         }
     }
 }
