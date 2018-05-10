@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
@@ -8,7 +7,14 @@ namespace FileSystem
 {
     public class Repository
     {
-        public IEnumerable<Node> GetNodesOnLevel(NpgsqlConnection connection, int level)
+        private readonly NpgsqlConnection connection;
+
+        public Repository(NpgsqlConnection connection)
+        {
+            this.connection = connection;
+        }
+
+        public IEnumerable<Node> GetNodesOnLevel(int level)
         {
             return connection.Query<Node>(
                 @"SELECT id, name, path::TEXT
@@ -20,7 +26,7 @@ namespace FileSystem
                 });
         }
 
-        public Node GetFirstNodeOnLevel(NpgsqlConnection connection, int level)
+        public Node GetFirstNodeOnLevel(int level)
         {
             return connection
                 .Query<Node>(
@@ -35,7 +41,7 @@ namespace FileSystem
                 .First();
         }
 
-        public IEnumerable<Node> GetDescendants(NpgsqlConnection connection, Node parent)
+        public IEnumerable<Node> GetDescendants(Node parent)
         {
             return connection.Query<Node>(
                 $@"SELECT id, name, path::TEXT
@@ -48,7 +54,7 @@ namespace FileSystem
                 });
         }
 
-        public IEnumerable<Node> GetAncestors(NpgsqlConnection connection, Node child)
+        public IEnumerable<Node> GetAncestors(Node child)
         {
             return connection.Query<Node>(
                 $@"SELECT id, name, path::TEXT

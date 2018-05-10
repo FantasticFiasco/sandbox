@@ -9,13 +9,13 @@ namespace Test
 {
     public class RepositoryShould : IDisposable
     {
-        private readonly Repository repository;
         private readonly NpgsqlConnection connection;
+        private readonly Repository repository;
 
         public RepositoryShould()
         {
-            repository = new Repository();
             connection = Db.OpenConnection();
+            repository = new Repository(connection);
         }
 
         public void Dispose()
@@ -32,7 +32,7 @@ namespace Test
         public void ReturnNodesGivenLevel(int level, int expectedCount)
         {
             // Act
-            var actual = repository.GetNodesOnLevel(connection, level);
+            var actual = repository.GetNodesOnLevel(level);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
@@ -46,10 +46,10 @@ namespace Test
         public void ReturnDescendantsGivenLevel(int level, int expectedCount)
         {
             // Arrange
-            var node = repository.GetFirstNodeOnLevel(connection, level);
+            var node = repository.GetFirstNodeOnLevel(level);
 
             // Act
-            var actual = repository.GetDescendants(connection, node);
+            var actual = repository.GetDescendants(node);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
@@ -63,10 +63,10 @@ namespace Test
         public void ReturnAncestorsGivenLevel(int level, int expectedCount)
         {
             // Arrange
-            var node = repository.GetFirstNodeOnLevel(connection, level);
+            var node = repository.GetFirstNodeOnLevel(level);
 
             // Act
-            var actual = repository.GetAncestors(connection, node);
+            var actual = repository.GetAncestors(node);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
