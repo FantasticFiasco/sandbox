@@ -46,10 +46,27 @@ namespace Test
         public void ReturnDescendantsGivenLevel(int level, int expectedCount)
         {
             // Arrange
-            var node = repository.GetNodesOnLevel(connection, level).First();
+            var node = repository.GetFirstNodeOnLevel(connection, level);
 
             // Act
             var actual = repository.GetDescendants(connection, node);
+
+            // Assert
+            actual.Count().ShouldBe(expectedCount);
+        }
+
+        [Theory]
+        [InlineData(1, 0)]
+        [InlineData(2, 1)]
+        [InlineData(3, 2)]
+        [InlineData(4, 3)]
+        public void ReturnAncestorsGivenLevel(int level, int expectedCount)
+        {
+            // Arrange
+            var node = repository.GetFirstNodeOnLevel(connection, level);
+
+            // Act
+            var actual = repository.GetAncestors(connection, node);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
