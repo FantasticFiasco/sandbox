@@ -11,13 +11,8 @@ namespace Test
     {
         private static readonly string ConnectionString = "Host=localhost;Username=root;Password=password";
 
-        private readonly string tableName;
-
-
-        public Db(string tableName)
+        public Db()
         {
-            this.tableName = tableName;
-
             Connection = new NpgsqlConnection(ConnectionString);
             Connection.Open();
         }
@@ -57,30 +52,97 @@ namespace Test
 
         private void RecreateTable()
         {
-            Console.WriteLine($"Recreate table {tableName}...");
+            Console.WriteLine("Recreate table 'node'...");
 
             using (var command = Connection.CreateCommand())
             {
-                // Table
-                command.CommandText = $"DROP TABLE IF EXISTS {tableName}";
-                command.ExecuteNonQuery();
+                DropPermissions(command);
+                DropOperations(command);
+                DropRoles(command);
+                DropNodes(command);
 
-                command.CommandText =
-                    $@"CREATE TABLE {tableName}
-                    (
-                        id text UNIQUE NOT NULL,
-                        name text NOT NULL,
-                        path ltree
-                    )";
-                command.ExecuteNonQuery();
-
-                // Index
-                command.CommandText = $"DROP INDEX IF EXISTS {tableName}_path_idx";
-                command.ExecuteNonQuery();
-
-                command.CommandText = $"CREATE INDEX {tableName}_path_idx ON {tableName} USING gist (path)";
-                command.ExecuteNonQuery();
+                CreateNodes(command);
+                CreateRoles(command);
+                CreateOperations(command);
+                CreatePermissions(command);
             }
+        }
+
+        private static void DropNodes(NpgsqlCommand command)
+        {
+            command.CommandText = "DROP INDEX IF EXISTS node_path_idx";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "DROP TABLE IF EXISTS node";
+            command.ExecuteNonQuery();
+        }
+
+        private static void CreateNodes(NpgsqlCommand command)
+        {
+            command.CommandText =
+                @"CREATE TABLE node
+                (
+                    id text PRIMARY KEY,
+                    name text NOT NULL,
+                    path ltree
+                )";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "CREATE INDEX node_path_idx ON node USING gist (path)";
+            command.ExecuteNonQuery();
+        }
+
+        private static void DropRoles(NpgsqlCommand command)
+        {
+            command.CommandText = "DROP TABLE IF EXISTS role";
+            command.ExecuteNonQuery();
+        }
+
+        private static void CreateRoles(NpgsqlCommand command)
+        {
+            command.CommandText =
+                @"CREATE TABLE role
+                (
+                    id text PRIMARY KEY,
+                    name text NOT NULL
+                )";
+            command.ExecuteNonQuery();
+        }
+
+        private static void DropOperations(NpgsqlCommand command)
+        {
+            command.CommandText = "DROP TABLE IF EXISTS operation";
+            command.ExecuteNonQuery();
+        }
+
+        private static void CreateOperations(NpgsqlCommand command)
+        {
+            command.CommandText =
+                @"CREATE TABLE operation
+                (
+                    id text PRIMARY KEY,
+                    name text NOT NULL,
+                    role_id text REFERENCES role(id) ON DELETE CASCADE
+                )";
+            command.ExecuteNonQuery();
+        }
+
+        private static void DropPermissions(NpgsqlCommand command)
+        {
+            command.CommandText = "DROP TABLE IF EXISTS permission";
+            command.ExecuteNonQuery();
+        }
+
+        private static void CreatePermissions(NpgsqlCommand command)
+        {
+            command.CommandText =
+                @"CREATE TABLE permission
+                (
+                    user_id text PRIMARY KEY,
+                    node_id text REFERENCES node(id) ON DELETE CASCADE,
+                    role_id text REFERENCES role(id) ON DELETE CASCADE
+                )";
+            command.ExecuteNonQuery();
         }
     }
 }

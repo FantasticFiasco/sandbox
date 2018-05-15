@@ -15,7 +15,7 @@ namespace Test
 
         static RepositoryShould()
         {
-            Db = new Db("node");
+            Db = new Db();
             Db.SetupTable();
 
             Repository = new Repository(Db.Connection);
