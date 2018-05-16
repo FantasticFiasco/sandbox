@@ -1,4 +1,5 @@
 using System;
+using Dapper;
 using Npgsql;
 
 namespace FileSystem
@@ -14,7 +15,17 @@ namespace FileSystem
 
         public void Add(string userId, Node node, Role role)
         {
-            throw new NotImplementedException();
+            connection.Execute(
+                @"INSERT INTO permission
+                (user_id, node_id, role_id)
+                VALUES
+                (@UserId, @NodeId, @RoleId)",
+                new
+                {
+                    UserId = userId,
+                    NodeId = node.Id,
+                    RoleId = role.Id
+                });
         }
 
         public UserPermission[] GetForNode(Node node)

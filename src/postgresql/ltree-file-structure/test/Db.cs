@@ -120,9 +120,10 @@ namespace Test
             command.CommandText =
                 @"CREATE TABLE operation
                 (
-                    id text PRIMARY KEY,
+                    id text NOT NULL,
                     name text NOT NULL,
-                    role_id text REFERENCES role(id) ON DELETE CASCADE
+                    role_id text REFERENCES role(id) ON DELETE CASCADE,
+                    PRIMARY KEY (id, role_id)
                 )";
             command.ExecuteNonQuery();
         }
