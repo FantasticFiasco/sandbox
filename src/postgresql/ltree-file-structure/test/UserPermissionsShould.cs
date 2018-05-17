@@ -12,8 +12,8 @@ namespace Test
     public class UserPermissionsShould
     {
         private readonly Db db;
-        private readonly Repository repository;
-        private readonly UserPermissions userPermissions;
+        private readonly NodeRepository nodeRepository;
+        private readonly PermissionRepository permissionRepository;
         private readonly string userId;
 
         private Role administratorRole;
@@ -28,8 +28,8 @@ namespace Test
             db = new Db();
             db.SetupTable();
 
-            repository = new Repository(db.Connection);
-            userPermissions = new UserPermissions(db.Connection);
+            nodeRepository = new NodeRepository(db.Connection);
+            permissionRepository = new PermissionRepository(db.Connection);
             userId = "John Doe";
 
             PopulateTable();
@@ -39,10 +39,10 @@ namespace Test
         public void ReturnDescendantsOfA()
         {
             // Arrange
-            var nodeA = repository.GetNodesOnLevel(1).Single();
+            var nodeA = nodeRepository.GetNodesOnLevel(1).Single();
 
             // Act
-            var descendants = repository.GetDescendants(nodeA);
+            var descendants = nodeRepository.GetDescendants(nodeA);
 
             // Assert
             descendants.Select(node => node.Name).OrderBy(_ => _).ShouldBe(new[] { "B", "C", "D", "E", "F", "G" });
@@ -52,10 +52,10 @@ namespace Test
         public void ReturnDescendantsOfB()
         {
             // Arrange
-            var nodeB = repository.GetNodesOnLevel(2).Single(node => node.Name == "B");
+            var nodeB = nodeRepository.GetNodesOnLevel(2).Single(node => node.Name == "B");
 
             // Act
-            var descendants = repository.GetDescendants(nodeB);
+            var descendants = nodeRepository.GetDescendants(nodeB);
 
             // Assert
             descendants.Select(node => node.Name).OrderBy(_ => _).ShouldBe(new[] { "G" });
@@ -65,10 +65,10 @@ namespace Test
         public void ReturnDescendantsOfC()
         {
             // Arrange
-            var nodeC = repository.GetNodesOnLevel(2).Single(node => node.Name == "C");
+            var nodeC = nodeRepository.GetNodesOnLevel(2).Single(node => node.Name == "C");
 
             // Act
-            var descendants = repository.GetDescendants(nodeC);
+            var descendants = nodeRepository.GetDescendants(nodeC);
 
             // Assert
             descendants.Select(node => node.Name).OrderBy(_ => _).ShouldBe(new[] { "D", "E", "F" });
@@ -78,10 +78,10 @@ namespace Test
         public void ReturnDescendantsOfD()
         {
             // Arrange
-            var nodeD = repository.GetNodesOnLevel(3).Single(node => node.Name == "D");
+            var nodeD = nodeRepository.GetNodesOnLevel(3).Single(node => node.Name == "D");
 
             // Act
-            var descendants = repository.GetDescendants(nodeD);
+            var descendants = nodeRepository.GetDescendants(nodeD);
 
             // Assert
             descendants.Select(node => node.Name).ShouldBeEmpty();
@@ -91,10 +91,10 @@ namespace Test
         public void ReturnDescendantsOfE()
         {
             // Arrange
-            var nodeE = repository.GetNodesOnLevel(3).Single(node => node.Name == "E");
+            var nodeE = nodeRepository.GetNodesOnLevel(3).Single(node => node.Name == "E");
 
             // Act
-            var descendants = repository.GetDescendants(nodeE);
+            var descendants = nodeRepository.GetDescendants(nodeE);
 
             // Assert
             descendants.Select(node => node.Name).ShouldBeEmpty();
@@ -104,10 +104,10 @@ namespace Test
         public void ReturnDescendantsOfF()
         {
             // Arrange
-            var nodeF = repository.GetNodesOnLevel(3).Single(node => node.Name == "F");
+            var nodeF = nodeRepository.GetNodesOnLevel(3).Single(node => node.Name == "F");
 
             // Act
-            var descendants = repository.GetDescendants(nodeF);
+            var descendants = nodeRepository.GetDescendants(nodeF);
 
             // Assert
             descendants.Select(node => node.Name).ShouldBeEmpty();
@@ -117,10 +117,10 @@ namespace Test
         public void ReturnDescendantsOfG()
         {
             // Arrange
-            var nodeG = repository.GetNodesOnLevel(3).Single(node => node.Name == "F");
+            var nodeG = nodeRepository.GetNodesOnLevel(3).Single(node => node.Name == "F");
 
             // Act
-            var descendants = repository.GetDescendants(nodeG);
+            var descendants = nodeRepository.GetDescendants(nodeG);
 
             // Assert
             descendants.Select(node => node.Name).ShouldBeEmpty();
@@ -130,18 +130,18 @@ namespace Test
         public void AddUserAsAdministratorToA()
         {
             // Arrange
-            var nodeA = repository.GetNodesOnLevel(1).Single(node => node.Name == "A");
+            var nodeA = nodeRepository.GetNodesOnLevel(1).Single(node => node.Name == "A");
 
             // Act
-            this.userPermissions.Add(userId, nodeA, administratorRole);
+            this.permissionRepository.Add(userId, nodeA, administratorRole);
 
             // Assert
-            // var userPermissions = this.userPermissions.GetForNode(nodeA);
-            // userPermissions.Length.ShouldBe(1);
-            // userPermissions[0].UserId.ShouldBe(userId);
-            // userPermissions[0].Roles.Length.ShouldBe(1);
-            // userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
-            // userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
+            var userPermissions = this.permissionRepository.GetForNode(nodeA);
+            userPermissions.Length.ShouldBe(1);
+            userPermissions[0].UserId.ShouldBe(userId);
+            userPermissions[0].Roles.Count.ShouldBe(1);
+            userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
+            userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
             // userPermissions[0].Roles[0].Operations.Length.ShouldBe(3);
             // userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShoudlBeTrue();
             // userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShoudlBeTrue();

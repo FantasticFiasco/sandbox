@@ -11,14 +11,14 @@ namespace Test
     public class RepositoryShould
     {
         private static readonly Db Db;
-        private static readonly Repository Repository;
+        private static readonly NodeRepository NodeRepository;
 
         static RepositoryShould()
         {
             Db = new Db();
             Db.SetupTable();
 
-            Repository = new Repository(Db.Connection);
+            NodeRepository = new NodeRepository(Db.Connection);
 
             PopulateTable();
         }
@@ -32,7 +32,7 @@ namespace Test
         public void ReturnNodesGivenLevel(int level, int expectedCount)
         {
             // Act
-            var actual = Repository.GetNodesOnLevel(level);
+            var actual = NodeRepository.GetNodesOnLevel(level);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
@@ -46,10 +46,10 @@ namespace Test
         public void ReturnDescendantsGivenLevel(int level, int expectedCount)
         {
             // Arrange
-            var node = Repository.GetFirstNodeOnLevel(level);
+            var node = NodeRepository.GetFirstNodeOnLevel(level);
 
             // Act
-            var actual = Repository.GetDescendants(node);
+            var actual = NodeRepository.GetDescendants(node);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
@@ -63,10 +63,10 @@ namespace Test
         public void ReturnAncestorsGivenLevel(int level, int expectedCount)
         {
             // Arrange
-            var node = Repository.GetFirstNodeOnLevel(level);
+            var node = NodeRepository.GetFirstNodeOnLevel(level);
 
             // Act
-            var actual = Repository.GetAncestors(node);
+            var actual = NodeRepository.GetAncestors(node);
 
             // Assert
             actual.Count().ShouldBe(expectedCount);
