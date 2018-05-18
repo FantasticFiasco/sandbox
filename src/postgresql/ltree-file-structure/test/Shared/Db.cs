@@ -43,8 +43,6 @@ namespace Shared
 
         private void EnableExtension()
         {
-            Console.WriteLine("Enable LTREE extension...");
-
             using (var command = Connection.CreateCommand())
             {
                 try
@@ -61,8 +59,6 @@ namespace Shared
 
         private void CreateTables()
         {
-            Console.WriteLine("Recreate table 'node'...");
-
             using (var command = Connection.CreateCommand())
             {
                 CreateNodes(command);
