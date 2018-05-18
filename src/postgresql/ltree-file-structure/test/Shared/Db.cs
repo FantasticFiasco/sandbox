@@ -1,7 +1,7 @@
 using System;
 using Npgsql;
 
-namespace Test
+namespace Shared
 {
     public class Db : IDisposable
     {
@@ -13,11 +13,11 @@ namespace Test
             Connection.Open();
         }
 
-        public NpgsqlConnection Connection { get; private set; }
+        public static string NewId() => Guid.NewGuid().ToString().Replace("-", "");
 
-        public string NewId() => Guid.NewGuid().ToString().Replace("-", "");
+        public NpgsqlConnection Connection { get; }
 
-        public void SetupTable()
+        public void SetupTables()
         {
             RecreateSchema();
             EnableExtension();

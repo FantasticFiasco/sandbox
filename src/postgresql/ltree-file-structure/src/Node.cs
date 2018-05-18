@@ -8,6 +8,8 @@ namespace FileSystem
 
         public string Path { get; set; }
 
+        public int Level() => Path.Split('.').Length;
+
         public override string ToString()
         {
             return $"Id: {Id}; Name: {Name}; Path: {Path}";

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Dapper;
 using FileSystem;
+using Shared;
 using Shouldly;
 using Xunit;
 
@@ -24,7 +25,7 @@ namespace Test
         public UserPermissionsShould()
         {
             db = new Db();
-            db.SetupTable();
+            db.SetupTables();
 
             nodeRepository = new NodeRepository(db.Connection);
             userPermissionsRepository = new UserPermissionsRepository(db.Connection);
@@ -262,45 +263,45 @@ namespace Test
             //     - F
             Console.WriteLine("Write nodes...");
 
-            var idA = db.NewId();
+            var idA = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idA}', 'A', '{idA}')");
 
-            var idB = db.NewId();
+            var idB = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idB}', 'B', '{idA}.{idB}')");
 
-            var idG = db.NewId();
+            var idG = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idG}', 'G', '{idA}.{idB}.{idG}')");
 
-            var idC = db.NewId();
+            var idC = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idC}', 'C', '{idA}.{idC}')");
 
-            var idD = db.NewId();
+            var idD = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idD}', 'D', '{idA}.{idC}.{idD}')");
 
-            var idE = db.NewId();
+            var idE = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idE}', 'E', '{idA}.{idC}.{idE}')");
 
-            var idF = db.NewId();
+            var idF = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idF}', 'F', '{idA}.{idC}.{idF}')");
 
             // Write roles
             Console.WriteLine("Write roles...");
 
-            administratorRole = new Role(db.NewId(), "Administrator", null);
+            administratorRole = new Role(Db.NewId(), "Administrator", null);
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{administratorRole.Id}', '{administratorRole.Name}')");
 
-            operatorRole = new Role(db.NewId(), "Operator", null);
+            operatorRole = new Role(Db.NewId(), "Operator", null);
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{operatorRole.Id}', '{operatorRole.Name}')");
 
-            viewerRole = new Role(db.NewId(), "Viewer", null);
+            viewerRole = new Role(Db.NewId(), "Viewer", null);
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{viewerRole.Id}', '{viewerRole.Name}')");
 
             // Write operations
             Console.WriteLine("Write operations...");
 
-            readOperation = new Operation { Id = db.NewId(), Name = "Read" };
-            writeOperation = new Operation { Id = db.NewId(), Name = "Write" };
-            executeOperation = new Operation { Id = db.NewId(), Name = "Execute" };
+            readOperation = new Operation { Id = Db.NewId(), Name = "Read" };
+            writeOperation = new Operation { Id = Db.NewId(), Name = "Write" };
+            executeOperation = new Operation { Id = Db.NewId(), Name = "Execute" };
 
             db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{readOperation.Id}', '{readOperation.Name}', '{administratorRole.Id}')");
             db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{writeOperation.Id}', '{writeOperation.Name}', '{administratorRole.Id}')");

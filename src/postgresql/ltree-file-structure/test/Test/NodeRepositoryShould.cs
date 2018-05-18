@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FileSystem;
+using Shared;
 using Shouldly;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Test
         static NodeRepositoryShould()
         {
             Db = new Db();
-            Db.SetupTable();
+            Db.SetupTables();
 
             NodeRepository = new NodeRepository(Db.Connection);
 
