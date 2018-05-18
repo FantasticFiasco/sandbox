@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FileSystem;
-using Npgsql;
 using Shouldly;
 using Xunit;
 
 namespace Test
 {
-    public class RepositoryShould
+    public class NodeRepositoryShould
     {
         private static readonly Db Db;
         private static readonly NodeRepository NodeRepository;
 
-        static RepositoryShould()
+        static NodeRepositoryShould()
         {
             Db = new Db();
             Db.SetupTable();

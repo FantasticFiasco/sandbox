@@ -61,7 +61,11 @@ namespace FileSystem
 
                     if (!roleLookup.TryGetValue(rolePo.id, out var role))
                     {
-                        role = new Role(rolePo.id, rolePo.name);
+                        var inheritedFrom = userPermissionPo.node_id == node.Id
+                            ? null
+                            : new Reference(userPermissionPo.node_id);
+
+                        role = new Role(rolePo.id, rolePo.name, inheritedFrom);
                         userPermissions.Roles.Add(role);
 
                         roleLookup.Add(role.Id, role);

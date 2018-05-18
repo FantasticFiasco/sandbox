@@ -145,6 +145,7 @@ namespace Test
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].InheritedFrom.ShouldBeNull();
         }
 
         [Fact]
@@ -170,6 +171,7 @@ namespace Test
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].InheritedFrom.Id.ShouldBe(nodeA.Id);
         }
 
         [Fact]
@@ -195,6 +197,7 @@ namespace Test
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].InheritedFrom.Id.ShouldBe(nodeA.Id);
         }
 
         [Fact]
@@ -218,6 +221,7 @@ namespace Test
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].InheritedFrom.ShouldBeNull();
         }
 
         [Fact]
@@ -243,6 +247,7 @@ namespace Test
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
             userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].InheritedFrom.Id.ShouldBe(nodeB.Id);
         }
 
         private void PopulateTable()
@@ -281,13 +286,13 @@ namespace Test
             // Write roles
             Console.WriteLine("Write roles...");
 
-            administratorRole = new Role(db.NewId(), "Administrator");
+            administratorRole = new Role(db.NewId(), "Administrator", null);
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{administratorRole.Id}', '{administratorRole.Name}')");
 
-            operatorRole = new Role(db.NewId(), "Operator");
+            operatorRole = new Role(db.NewId(), "Operator", null);
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{operatorRole.Id}', '{operatorRole.Name}')");
 
-            viewerRole = new Role(db.NewId(), "Viewer");
+            viewerRole = new Role(db.NewId(), "Viewer", null);
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{viewerRole.Id}', '{viewerRole.Name}')");
 
             // Write operations
