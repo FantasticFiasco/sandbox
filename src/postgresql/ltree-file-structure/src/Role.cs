@@ -1,9 +1,20 @@
+using System.Collections.Generic;
+
 namespace FileSystem
 {
     public class Role
     {
-        public string Id { get; set; }
+        public Role(string id, string name)
+        {
+            Id = id;
+            Name = name;
+            Operations = new List<Operation>();
+        }
 
-        public string Name { get; set; }
+        public string Id { get; }
+
+        public string Name { get; }
+
+        public List<Operation> Operations { get; }
     }
 }

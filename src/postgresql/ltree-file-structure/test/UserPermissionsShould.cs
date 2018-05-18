@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dapper;
 using FileSystem;
-using Npgsql;
 using Shouldly;
 using Xunit;
 
@@ -13,7 +11,7 @@ namespace Test
     {
         private readonly Db db;
         private readonly NodeRepository nodeRepository;
-        private readonly PermissionRepository permissionRepository;
+        private readonly UserPermissionsRepository userPermissionsRepository;
         private readonly string userId;
 
         private Role administratorRole;
@@ -29,7 +27,7 @@ namespace Test
             db.SetupTable();
 
             nodeRepository = new NodeRepository(db.Connection);
-            permissionRepository = new PermissionRepository(db.Connection);
+            userPermissionsRepository = new UserPermissionsRepository(db.Connection);
             userId = "John Doe";
 
             PopulateTable();
@@ -133,19 +131,20 @@ namespace Test
             var nodeA = nodeRepository.GetNodesOnLevel(1).Single(node => node.Name == "A");
 
             // Act
-            this.permissionRepository.Add(userId, nodeA, administratorRole);
+            userPermissionsRepository.Add(userId, nodeA, administratorRole);
 
             // Assert
-            var userPermissions = this.permissionRepository.GetForNode(nodeA);
+            var userPermissions = userPermissionsRepository.GetForNode(nodeA);
+
             userPermissions.Length.ShouldBe(1);
             userPermissions[0].UserId.ShouldBe(userId);
             userPermissions[0].Roles.Count.ShouldBe(1);
             userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
             userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
-            // userPermissions[0].Roles[0].Operations.Length.ShouldBe(3);
-            // userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShoudlBeTrue();
-            // userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShoudlBeTrue();
-            // userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShoudlBeTrue();
+            userPermissions[0].Roles[0].Operations.Count.ShouldBe(3);
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
         }
 
         private void PopulateTable()
@@ -184,13 +183,13 @@ namespace Test
             // Write roles
             Console.WriteLine("Write roles...");
 
-            administratorRole = new Role { Id = db.NewId(), Name = "Administrator" };
+            administratorRole = new Role(db.NewId(), "Administrator");
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{administratorRole.Id}', '{administratorRole.Name}')");
 
-            operatorRole = new Role { Id = db.NewId(), Name = "Operator" };
+            operatorRole = new Role(db.NewId(), "Operator");
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{operatorRole.Id}', '{operatorRole.Name}')");
 
-            viewerRole = new Role { Id = db.NewId(), Name = "Viewer" };
+            viewerRole = new Role(db.NewId(), "Viewer");
             db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{viewerRole.Id}', '{viewerRole.Name}')");
 
             // Write operations

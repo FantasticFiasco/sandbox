@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using FileSystem;
 using Npgsql;
-using NpgsqlTypes;
-using Xunit;
 
 namespace Test
 {
@@ -23,13 +19,26 @@ namespace Test
 
         public void SetupTable()
         {
+            RecreateSchema();
             EnableExtension();
-            RecreateTable();
+            CreateTables();
         }
 
         public void Dispose()
         {
             Connection?.Dispose();
+        }
+
+        private void RecreateSchema()
+        {
+            using (var command = Connection.CreateCommand())
+            {
+                command.CommandText = "DROP SCHEMA IF EXISTS public CASCADE";
+                command.ExecuteNonQuery();
+
+                command.CommandText = "CREATE SCHEMA public";
+                command.ExecuteNonQuery();
+            }
         }
 
         private void EnableExtension()
@@ -50,31 +59,17 @@ namespace Test
             }
         }
 
-        private void RecreateTable()
+        private void CreateTables()
         {
             Console.WriteLine("Recreate table 'node'...");
 
             using (var command = Connection.CreateCommand())
             {
-                DropPermissions(command);
-                DropOperations(command);
-                DropRoles(command);
-                DropNodes(command);
-
                 CreateNodes(command);
                 CreateRoles(command);
                 CreateOperations(command);
                 CreatePermissions(command);
             }
-        }
-
-        private static void DropNodes(NpgsqlCommand command)
-        {
-            command.CommandText = "DROP INDEX IF EXISTS node_path_idx";
-            command.ExecuteNonQuery();
-
-            command.CommandText = "DROP TABLE IF EXISTS node";
-            command.ExecuteNonQuery();
         }
 
         private static void CreateNodes(NpgsqlCommand command)
@@ -92,12 +87,6 @@ namespace Test
             command.ExecuteNonQuery();
         }
 
-        private static void DropRoles(NpgsqlCommand command)
-        {
-            command.CommandText = "DROP TABLE IF EXISTS role";
-            command.ExecuteNonQuery();
-        }
-
         private static void CreateRoles(NpgsqlCommand command)
         {
             command.CommandText =
@@ -106,12 +95,6 @@ namespace Test
                     id text PRIMARY KEY,
                     name text NOT NULL
                 )";
-            command.ExecuteNonQuery();
-        }
-
-        private static void DropOperations(NpgsqlCommand command)
-        {
-            command.CommandText = "DROP TABLE IF EXISTS operation";
             command.ExecuteNonQuery();
         }
 
@@ -128,16 +111,10 @@ namespace Test
             command.ExecuteNonQuery();
         }
 
-        private static void DropPermissions(NpgsqlCommand command)
-        {
-            command.CommandText = "DROP TABLE IF EXISTS permission";
-            command.ExecuteNonQuery();
-        }
-
         private static void CreatePermissions(NpgsqlCommand command)
         {
             command.CommandText =
-                @"CREATE TABLE permission
+                @"CREATE TABLE user_permission
                 (
                     user_id text PRIMARY KEY,
                     node_id text REFERENCES node(id) ON DELETE CASCADE,

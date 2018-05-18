@@ -4,12 +4,13 @@ namespace FileSystem
 {
     public class UserPermissions
     {
-        public UserPermissions()
+        public UserPermissions(string userId)
         {
+            UserId = userId;
             Roles = new List<Role>();
         }
 
-        public string UserId { get; set; }
+        public string UserId { get; }
 
         public List<Role> Roles { get; }
     }
