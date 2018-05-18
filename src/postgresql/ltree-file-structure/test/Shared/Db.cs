@@ -5,7 +5,7 @@ namespace Shared
 {
     public class Db : IDisposable
     {
-        private static readonly string ConnectionString = "Host=localhost;Username=root;Password=password";
+        private static readonly string ConnectionString = "Host=localhost;Username=root;Password=password;Max Auto Prepare=10";
 
         public Db()
         {
