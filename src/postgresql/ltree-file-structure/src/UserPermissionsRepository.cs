@@ -36,11 +36,20 @@ namespace FileSystem
             var roleLookup = new Dictionary<string, Role>();
 
             connection.Query<PermissionPo, RolePo, OperationPo, UserPermissions>(
-                @"SELECT up.*, r.*, o.*
-                FROM user_permission up
-                JOIN role r ON r.id = up.role_id
-                JOIN operation o ON o.role_id = r.id
-                WHERE up.node_id = @NodeId",
+                $@"SELECT user_permission.*, role.*, operation.*
+                FROM user_permission
+                JOIN role ON role.id = user_permission.role_id
+                JOIN operation ON operation.role_id = role.id
+                WHERE user_permission.node_id = ANY(
+                    SELECT id
+                    FROM node
+                    WHERE path @>
+                        (
+                            SELECT path
+                            FROM node
+                            WHERE id = '{node.Id}'
+                        )
+                )",
                 (userPermissionPo, rolePo, operationPo) =>
                 {
                     if (!userPermissionsLookup.TryGetValue(userPermissionPo.user_id, out var userPermissions))

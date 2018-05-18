@@ -125,17 +125,115 @@ namespace Test
         }
 
         [Fact]
-        public void AddUserAsAdministratorToA()
+        public void ReturnRolesOnAGivenAddedToA()
         {
             // Arrange
             var nodeA = nodeRepository.GetNodesOnLevel(1).Single(node => node.Name == "A");
 
-            // Act
             userPermissionsRepository.Add(userId, nodeA, administratorRole);
 
-            // Assert
+            // Act
             var userPermissions = userPermissionsRepository.GetForNode(nodeA);
 
+            // Assert
+            userPermissions.Length.ShouldBe(1);
+            userPermissions[0].UserId.ShouldBe(userId);
+            userPermissions[0].Roles.Count.ShouldBe(1);
+            userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
+            userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
+            userPermissions[0].Roles[0].Operations.Count.ShouldBe(3);
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void ReturnRolesOnBGivenAddedToA()
+        {
+            // Arrange
+            var nodeA = nodeRepository.GetNodesOnLevel(1).Single(node => node.Name == "A");
+
+            userPermissionsRepository.Add(userId, nodeA, administratorRole);
+
+            var nodeB = nodeRepository.GetNodesOnLevel(2).Single(node => node.Name == "B");
+
+            // Act
+            var userPermissions = userPermissionsRepository.GetForNode(nodeB);
+
+            // Assert
+            userPermissions.Length.ShouldBe(1);
+            userPermissions[0].UserId.ShouldBe(userId);
+            userPermissions[0].Roles.Count.ShouldBe(1);
+            userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
+            userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
+            userPermissions[0].Roles[0].Operations.Count.ShouldBe(3);
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void ReturnRolesOnGGivenAddedToA()
+        {
+            // Arrange
+            var nodeA = nodeRepository.GetNodesOnLevel(1).Single(node => node.Name == "A");
+
+            userPermissionsRepository.Add(userId, nodeA, administratorRole);
+
+            var nodeG = nodeRepository.GetNodesOnLevel(3).Single(node => node.Name == "G");
+
+            // Act
+            var userPermissions = userPermissionsRepository.GetForNode(nodeG);
+
+            // Assert
+            userPermissions.Length.ShouldBe(1);
+            userPermissions[0].UserId.ShouldBe(userId);
+            userPermissions[0].Roles.Count.ShouldBe(1);
+            userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
+            userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
+            userPermissions[0].Roles[0].Operations.Count.ShouldBe(3);
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void ReturnRolesOnBGivenAddedToB()
+        {
+            // Arrange
+            var nodeB = nodeRepository.GetNodesOnLevel(2).Single(node => node.Name == "B");
+
+            userPermissionsRepository.Add(userId, nodeB, administratorRole);
+
+            // Act
+            var userPermissions = userPermissionsRepository.GetForNode(nodeB);
+
+            // Assert
+            userPermissions.Length.ShouldBe(1);
+            userPermissions[0].UserId.ShouldBe(userId);
+            userPermissions[0].Roles.Count.ShouldBe(1);
+            userPermissions[0].Roles[0].Id.ShouldBe(administratorRole.Id);
+            userPermissions[0].Roles[0].Name.ShouldBe(administratorRole.Name);
+            userPermissions[0].Roles[0].Operations.Count.ShouldBe(3);
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == readOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == writeOperation.Id).ShouldBeTrue();
+            userPermissions[0].Roles[0].Operations.Any(operation => operation.Id == executeOperation.Id).ShouldBeTrue();
+        }
+
+        [Fact]
+        public void ReturnRolesOnGGivenAddedToB()
+        {
+            // Arrange
+            var nodeB = nodeRepository.GetNodesOnLevel(2).Single(node => node.Name == "B");
+
+            userPermissionsRepository.Add(userId, nodeB, administratorRole);
+
+            var nodeG = nodeRepository.GetNodesOnLevel(3).Single(node => node.Name == "G");
+
+            // Act
+            var userPermissions = userPermissionsRepository.GetForNode(nodeG);
+
+            // Assert
             userPermissions.Length.ShouldBe(1);
             userPermissions[0].UserId.ShouldBe(userId);
             userPermissions[0].Roles.Count.ShouldBe(1);
