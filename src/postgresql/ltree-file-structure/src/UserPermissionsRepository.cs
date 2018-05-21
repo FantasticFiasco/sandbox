@@ -15,7 +15,7 @@ namespace FileSystem
             this.connection = connection;
         }
 
-        public void Add(string userId, Node node, Role role)
+        public void Add(string userId, string nodeId, string roleId)
         {
             connection.Execute(
                 @"INSERT INTO user_permission
@@ -25,17 +25,17 @@ namespace FileSystem
                 new
                 {
                     UserId = userId,
-                    NodeId = node.Id,
-                    RoleId = role.Id
+                    NodeId = nodeId,
+                    RoleId = roleId
                 });
         }
 
-        public UserPermissions[] GetForNode(Node node)
+        public UserPermissions[] GetForNode(string nodeId)
         {
             var userPermissionsLookup = new Dictionary<string, UserPermissions>();
             var roleLookup = new Dictionary<string, Role>();
 
-            connection.Query<PermissionPo, RolePo, OperationPo, UserPermissions>(
+            connection.Query<UserPermissionPo, RolePo, OperationPo, UserPermissions>(
                 $@"SELECT user_permission.*, role.*, operation.*
                 FROM user_permission
                 JOIN role ON role.id = user_permission.role_id
@@ -47,7 +47,7 @@ namespace FileSystem
                         (
                             SELECT path
                             FROM node
-                            WHERE id = '{node.Id}'
+                            WHERE id = @NodeId
                         )
                 )",
                 (userPermissionPo, rolePo, operationPo) =>
@@ -61,7 +61,7 @@ namespace FileSystem
 
                     if (!roleLookup.TryGetValue(rolePo.id, out var role))
                     {
-                        var inheritedFrom = userPermissionPo.node_id == node.Id
+                        var inheritedFrom = userPermissionPo.node_id == nodeId
                             ? null
                             : new Reference(userPermissionPo.node_id);
 
@@ -81,7 +81,7 @@ namespace FileSystem
                 },
                 new
                 {
-                    NodeId = node.Id
+                    NodeId = nodeId
                 });
 
             return userPermissionsLookup.Values.ToArray();

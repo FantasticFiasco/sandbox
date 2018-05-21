@@ -93,30 +93,6 @@ namespace Benchmark
 
             var idF = Db.NewId();
             db.Connection.Execute($"INSERT INTO node (id, name, path) VALUES ('{idF}', 'F', '{idA}.{idC}.{idF}')");
-
-            // Write roles
-            var administratorRole = new Role("administrator", "Administrator", null);
-            db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{administratorRole.Id}', '{administratorRole.Name}')");
-
-            var operatorRole = new Role("operator", "Operator", null);
-            db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{operatorRole.Id}', '{operatorRole.Name}')");
-
-            var viewerRole = new Role("viewer", "Viewer", null);
-            db.Connection.Execute($"INSERT INTO role (id, name) VALUES ('{viewerRole.Id}', '{viewerRole.Name}')");
-
-            // Write operations
-            var readOperation = new Operation { Id = "read", Name = "Read" };
-            var writeOperation = new Operation { Id = "write", Name = "Write" };
-            var executeOperation = new Operation { Id = "execute", Name = "Execute" };
-
-            db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{readOperation.Id}', '{readOperation.Name}', '{administratorRole.Id}')");
-            db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{writeOperation.Id}', '{writeOperation.Name}', '{administratorRole.Id}')");
-            db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{executeOperation.Id}', '{executeOperation.Name}', '{administratorRole.Id}')");
-
-            db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{readOperation.Id}', '{readOperation.Name}', '{operatorRole.Id}')");
-            db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{writeOperation.Id}', '{writeOperation.Name}', '{operatorRole.Id}')");
-
-            db.Connection.Execute($"INSERT INTO operation (id, name, role_id) VALUES ('{readOperation.Id}', '{readOperation.Name}', '{viewerRole.Id}')");
         }
     }
 }

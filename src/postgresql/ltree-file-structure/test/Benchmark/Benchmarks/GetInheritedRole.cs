@@ -32,7 +32,7 @@ namespace Benchmark.Benchmarks
 
             // Add user "John Doe" with role "Administrator" to a node on first level
             nodeOnFirstLevel = nodeRepository.GetFirstNodeOnLevel(1);
-            userPermissionsRepository.Add("John Doe", nodeOnFirstLevel, new Role("administrator", "Administrator", null));
+            userPermissionsRepository.Add("John Doe", nodeOnFirstLevel.Id, "administrator");
 
             // Get one descendant on each level under the first level node
             var descendants = nodeRepository.GetDescendants(nodeOnFirstLevel);
@@ -44,15 +44,15 @@ namespace Benchmark.Benchmarks
         }
 
         [Benchmark]
-        public UserPermissions[] OnSecondLevel() => userPermissionsRepository.GetForNode(nodeOnSecondLevel);
+        public UserPermissions[] OnSecondLevel() => userPermissionsRepository.GetForNode(nodeOnSecondLevel.Id);
 
         [Benchmark]
-        public UserPermissions[] OnThirdLevel() => userPermissionsRepository.GetForNode(nodeOnThirdLevel);
+        public UserPermissions[] OnThirdLevel() => userPermissionsRepository.GetForNode(nodeOnThirdLevel.Id);
 
         [Benchmark]
-        public UserPermissions[] OnFourthLevel() => userPermissionsRepository.GetForNode(nodeOnFourthLevel);
+        public UserPermissions[] OnFourthLevel() => userPermissionsRepository.GetForNode(nodeOnFourthLevel.Id);
 
         [Benchmark]
-        public UserPermissions[] OnFifthLevel() => userPermissionsRepository.GetForNode(nodeOnFifthLevel);
+        public UserPermissions[] OnFifthLevel() => userPermissionsRepository.GetForNode(nodeOnFifthLevel.Id);
     }
 }

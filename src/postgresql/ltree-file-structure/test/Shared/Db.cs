@@ -92,6 +92,16 @@ namespace Shared
                     name text NOT NULL
                 )";
             command.ExecuteNonQuery();
+
+            // Write roles
+            command.CommandText = "INSERT INTO role (id, name) VALUES ('administrator', 'Administrator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO role (id, name) VALUES ('operator', 'Operator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO role (id, name) VALUES ('viewer', 'Viewer')";
+            command.ExecuteNonQuery();
         }
 
         private static void CreateOperations(NpgsqlCommand command)
@@ -105,6 +115,25 @@ namespace Shared
                     PRIMARY KEY (id, role_id)
                 )";
             command.ExecuteNonQuery();
+
+            // Write operations
+            command.CommandText = "INSERT INTO operation (id, name, role_id) VALUES ('read', 'Read', 'administrator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO operation (id, name, role_id) VALUES ('write', 'Write', 'administrator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO operation (id, name, role_id) VALUES ('execute', 'Execute', 'administrator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO operation (id, name, role_id) VALUES ('read', 'Read', 'operator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO operation (id, name, role_id) VALUES ('write', 'Write', 'operator')";
+            command.ExecuteNonQuery();
+
+            command.CommandText = "INSERT INTO operation (id, name, role_id) VALUES ('read', 'Read', 'viewer')";
+            command.ExecuteNonQuery();
         }
 
         private static void CreatePermissions(NpgsqlCommand command)
@@ -112,7 +141,7 @@ namespace Shared
             command.CommandText =
                 @"CREATE TABLE user_permission
                 (
-                    user_id text PRIMARY KEY,
+                    user_id text NOT NULL,
                     node_id text REFERENCES node(id) ON DELETE CASCADE,
                     role_id text REFERENCES role(id) ON DELETE CASCADE
                 )";

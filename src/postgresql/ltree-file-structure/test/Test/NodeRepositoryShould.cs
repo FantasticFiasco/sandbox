@@ -24,10 +24,10 @@ namespace Test
         }
 
         [Theory]
-        [InlineData(1, 10000)]
-        [InlineData(2, 10000 * 5)]
-        [InlineData(3, 10000 * 5 * 5)]
-        [InlineData(4, 10000 * 5 * 5 * 5)]
+        [InlineData(1, 10)]
+        [InlineData(2, 10 * 5)]
+        [InlineData(3, 10 * 5 * 5)]
+        [InlineData(4, 10 * 5 * 5 * 5)]
         [InlineData(5, 0)]
         public void ReturnNodesGivenLevel(int level, int expectedCount)
         {
@@ -72,6 +72,45 @@ namespace Test
             actual.Count().ShouldBe(expectedCount);
         }
 
+        [Fact]
+        public void ReturnUserNodesGivenRoleOnLevelOne()
+        {
+            // Arrange
+            var nodeOnLevelOne = NodeRepository.GetFirstNodeOnLevel(1);
+
+            var userPermissionsRepository = new UserPermissionsRepository(Db.Connection);
+
+            userPermissionsRepository.Add("John Doe", nodeOnLevelOne.Id, "administrator");
+
+            // Act
+            var actual = NodeRepository.GetNodesByUser("John Doe");
+
+            // Assert
+            actual.Length.ShouldBe(1 + 5 + (5 * 5) + (5 * 5 * 5));
+        }
+
+        [Fact]
+        public void ReturnUserNodesGivenRoleOnLevelOneAndTwoInSameTree()
+        {
+            // Arrange
+            var nodeOnLevelOne = NodeRepository.GetFirstNodeOnLevel(1);
+
+            var nodeOnLevelTwo = NodeRepository
+                .GetDescendants(nodeOnLevelOne)
+                .First(node => node.Level() == 2);
+
+            var userPermissionsRepository = new UserPermissionsRepository(Db.Connection);
+
+            userPermissionsRepository.Add("John Doe", nodeOnLevelOne.Id, "administrator");
+            userPermissionsRepository.Add("John Doe", nodeOnLevelTwo.Id, "administrator");
+
+            // Act
+            var actual = NodeRepository.GetNodesByUser("John Doe");
+
+            // Assert
+            actual.Length.ShouldBe(1 + 5 + (5 * 5) + (5 * 5 * 5));
+        }
+
         private static void PopulateTable()
         {
             Console.WriteLine("Create nodes...");
@@ -79,12 +118,12 @@ namespace Test
             var nodes = new List<Node>();
 
             // Populate with:
-            // - 10.000 root nodes
+            // - 10 root nodes
             // - Each node has 5 children
-            // - That goes on until we have four levels
+            // - That goes on until we have three levels
             // It would mean that we should create
-            //   10.000 * (1 + 5 * 5² + 5³) = 1.560.000 nodes
-            for (int levelOneIndex = 0; levelOneIndex < 10000; levelOneIndex++)
+            //   10 * (1 + 5 * 5²) = 1.560 nodes
+            for (int levelOneIndex = 0; levelOneIndex < 10; levelOneIndex++)
             {
                 var levelOneId = Db.NewId();
                 var levelOneName = $"{levelOneIndex}";
