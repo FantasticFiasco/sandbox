@@ -1,4 +1,6 @@
 ﻿using System;
+using ConsoleInDocker;
+using Microsoft.Extensions.DependencyInjection;
 using Paramore.Brighter;
 
 namespace HelloWorld
@@ -7,23 +9,50 @@ namespace HelloWorld
     {
         static void Main(string[] args)
         {
-            var registry = new SubscriberRegistry();
-            registry.Register<GreetingCommand, GreetingCommandHandler>();
+            var serviceProvider = BuildServiceProvider();
+            var commandProcessor = BuildCommandProcessor(serviceProvider);
 
-            var builder = CommandProcessorBuilder.With()
+            commandProcessor.Send(new SalutationCommand("John"));
+
+            Wait.ForShutdown();
+        }
+
+        private static IServiceProvider BuildServiceProvider()
+        {
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddTransient<SalutationHandler>();
+
+            return serviceCollection.BuildServiceProvider();
+        }
+
+        private static IAmACommandProcessor BuildCommandProcessor(IServiceProvider serviceProvider)
+        {
+            // 1. Maps commands to Handlers
+            var registry = CreateRegistry();
+            
+            // 2. Builds handlers
+            var factory = new ServiceProviderHandler(serviceProvider);
+
+            var builder = CommandProcessorBuilder
+                .With()
                 .Handlers(new HandlerConfiguration(
-                        subscriberRegistry: registry,
-                        handlerFactory: new SimpleHandlerFactory()))
+                    subscriberRegistry: registry,
+                    handlerFactory: factory))
                 .DefaultPolicy()
                 .NoTaskQueues()
                 .RequestContextFactory(new InMemoryRequestContextFactory());
 
-            var commandProcessor = builder.Build();
+            return builder.Build();
+        }
 
-            commandProcessor.Send(new GreetingCommand("Ian"));
+        private static SubscriberRegistry CreateRegistry()
+        {
+            var registry = new SubscriberRegistry();
 
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadKey();
+            registry.Register<SalutationCommand, SalutationHandler>();
+            
+            return registry;
         }
     }
 }

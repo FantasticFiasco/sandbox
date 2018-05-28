@@ -3,9 +3,9 @@ using Paramore.Brighter;
 
 namespace HelloWorld
 {
-    public class GreetingCommand : IRequest
+    public class SalutationCommand : IRequest
     {
-        public GreetingCommand(string name)
+        public SalutationCommand(string name)
         {
             Id = Guid.NewGuid();
             Name = name;
