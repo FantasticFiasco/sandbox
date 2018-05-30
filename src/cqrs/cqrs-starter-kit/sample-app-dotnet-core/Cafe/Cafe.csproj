@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\starter-kit-dotnet-core\Edument.CQRS\Edument.CQRS.csproj" />
+    <ProjectReference Include="..\Events\Events.csproj" />
+  </ItemGroup>
+</Project>
