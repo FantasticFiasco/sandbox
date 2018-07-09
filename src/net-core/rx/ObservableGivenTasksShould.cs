@@ -46,7 +46,7 @@ namespace Rx
             {
                 ct.Register(() => hasBeenCancelled = true);
 
-                await Task.Delay(1000);
+                await Task.Delay(1000, ct);
 
                 observer.OnCompleted();
             });
