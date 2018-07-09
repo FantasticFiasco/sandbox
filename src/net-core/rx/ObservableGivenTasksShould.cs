@@ -13,7 +13,7 @@ namespace Rx
         [Fact]
         public void ReturnStreamWithThreeNumbers()
         {
-            // Arrange
+            // Act
             var stream = Observable.Create<int>(async (observer) =>
             {
                 observer.OnNext(await DoSomething(1));
@@ -23,17 +23,11 @@ namespace Rx
                 observer.OnCompleted();
             });
 
-            var events = new List<int>();
-
-            // Act
-            stream.Subscribe(number => events.Add(number));
-            stream.Wait();
-
             // Assert
-            events.Count.ShouldBe(3);
-            events[0].ShouldBe(1);
-            events[1].ShouldBe(2);
-            events[2].ShouldBe(3);
+            stream
+                .SequenceEqual(Observable.Range(1, 3))
+                .Wait()
+                .ShouldBeTrue();
         }
 
         [Fact]
@@ -64,19 +58,16 @@ namespace Rx
             // Arrange
             var hasExceptionBeenCaught = false;
 
-            var stream = Observable
-                .Create<int>(async (observer) =>
-                {
-                    await Task.FromException(new Exception("This is a exception!"));
-                })
-                .Catch<int, Exception>(e => 
-                {
-                    hasExceptionBeenCaught = true;
-                    return Observable.Return(-1);
-                });
+            var stream = Observable.Create<int>(async (observer) =>
+            {
+                await Task.FromException(new Exception("This is a exception!"));
+            });
 
             // Act
-            stream.Wait();
+            stream.Subscribe(
+                number => { },
+                e => hasExceptionBeenCaught = true,
+                () => { });
             
             // Assert
             hasExceptionBeenCaught.ShouldBeTrue();
