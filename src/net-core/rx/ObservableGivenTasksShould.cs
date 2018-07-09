@@ -58,6 +58,30 @@ namespace Rx
             hasBeenCancelled.ShouldBeTrue();
         }
 
+        [Fact]
+        public void SupportExceptions()
+        {
+            // Arrange
+            var hasExceptionBeenCaught = false;
+
+            var stream = Observable
+                .Create<int>(async (observer) =>
+                {
+                    await Task.FromException(new Exception("This is a exception!"));
+                })
+                .Catch<int, Exception>(e => 
+                {
+                    hasExceptionBeenCaught = true;
+                    return Observable.Return(-1);
+                });
+
+            // Act
+            stream.Wait();
+            
+            // Assert
+            hasExceptionBeenCaught.ShouldBeTrue();
+        }
+
         private static Task<int> DoSomething(int returnValue)
         {
             return Task.FromResult(returnValue);
