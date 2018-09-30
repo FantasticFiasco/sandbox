@@ -119,9 +119,9 @@ artillery-plugin-statsd@^2.2.0:
     lodash "3.10.1"
     lynx "^0.2.0"
 
-artillery@^1.6.0-14:
+artillery@1.6.0-14:
   version "1.6.0-14"
-  resolved "https://registry.yarnpkg.com/artillery/-/artillery-1.6.0-14.tgz#b61660c531b52dcb19ccfc59f43a3acb4194f426"
+  resolved "http://registry.npmjs.org/artillery/-/artillery-1.6.0-14.tgz#b61660c531b52dcb19ccfc59f43a3acb4194f426"
   dependencies:
     arrivals "^2.0.2"
     artillery-core "4.8.0"
