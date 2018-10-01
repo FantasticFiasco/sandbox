@@ -30,7 +30,7 @@
     "@angular/compiler-cli": "2.4.10",
     "@types/jasmine": "2.8.8",
     "@types/node": "6.0.117",
-    "codelyzer": "2.0.1",
+    "codelyzer": "2.1.1",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "karma": "1.2.0",
