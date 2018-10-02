@@ -28,7 +28,7 @@
     "awesome-typescript-loader": "2.2.4",
     "css-loader": "0.23.1",
     "extract-text-webpack-plugin": "1.0.1",
-    "file-loader": "0.8.5",
+    "file-loader": "0.11.2",
     "html-loader": "0.4.5",
     "html-webpack-plugin": "2.30.1",
     "jasmine-core": "2.99.1",
