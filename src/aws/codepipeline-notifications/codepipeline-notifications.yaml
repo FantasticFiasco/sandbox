@@ -10,81 +10,6 @@ Parameters:
 
 Resources:
 
-  # Pipeline started notification
-
-  StartedTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: Topic for pipeline started events
-      Subscription:
-        - Protocol: email
-          Endpoint: !Ref EmailAddress
-
-  StartedRule:
-    Type: AWS::Events::Rule
-    Properties:
-      EventPattern:
-        source:
-          - aws.codepipeline
-        detail-type:
-          - CodePipeline Action Execution State Change
-        detail:
-          state:
-            - STARTED
-      Targets:
-        - Id: StartedTopic
-          Arn: !Ref StartedTopic
-
-  # Pipeline succeeded notification
-
-  SucceededTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: Topic for pipeline succeeded events
-      Subscription:
-        - Protocol: email
-          Endpoint: !Ref EmailAddress
-
-  SucceededRule:
-    Type: AWS::Events::Rule
-    Properties:
-      EventPattern:
-        source:
-          - aws.codepipeline
-        detail-type:
-          - CodePipeline Action Execution State Change
-        detail:
-          state:
-            - SUCCEEDED
-      Targets:
-        - Id: SucceededTopic
-          Arn: !Ref SucceededTopic
-
-  # Pipeline failed notification
-
-  FailedTopic:
-    Type: AWS::SNS::Topic
-    Properties:
-      DisplayName: Topic for pipeline failed events
-      Subscription:
-        - Protocol: email
-          Endpoint: !Ref EmailAddress
-
-  FailedRule:
-    Type: AWS::Events::Rule
-    Properties:
-      EventPattern:
-        source:
-          - aws.codepipeline
-        detail-type:
-          - CodePipeline Action Execution State Change
-        detail:
-          state:
-            - FAILED
-      Targets:
-        - Id: FailedTopic
-          Arn: !Ref FailedTopic
-
   # Pipeline
 
   Pipeline:
@@ -150,3 +75,111 @@ Resources:
                   - iam:PassRole
                   - s3:*
                 Resource: "*"
+
+  # Pipeline started notification
+
+  StartedTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Topic for pipeline started events
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EmailAddress
+        - Protocol: lambda
+          Endpoint: !GetAtt NotificationLambda.Arn
+
+  StartedRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Pipeline Execution State Change
+        detail:
+          state:
+            - STARTED
+      Targets:
+        - Id: StartedTopic
+          Arn: !Ref StartedTopic
+
+  # Pipeline succeeded notification
+
+  SucceededTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Topic for pipeline succeeded events
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EmailAddress
+
+  SucceededRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Pipeline Execution State Change
+        detail:
+          state:
+            - SUCCEEDED
+      Targets:
+        - Id: SucceededTopic
+          Arn: !Ref SucceededTopic
+
+  # Pipeline failed notification
+
+  FailedTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Topic for pipeline failed events
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EmailAddress
+
+  FailedRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Pipeline Execution State Change
+        detail:
+          state:
+            - FAILED
+      Targets:
+        - Id: FailedTopic
+          Arn: !Ref FailedTopic
+
+  # Notification lambda
+
+  NotificationLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: index.handler
+      Role: !GetAtt NotificationLambdaExecutionRole.Arn
+      Runtime: python3.7
+      Code:
+        ZipFile: |
+          def handler(event, context):
+
+            time = event['time']
+            account = event['account']
+            pipeline = event['detail']['pipeline']
+
+            print('{} Account: {}; pipeline: {}'.format(time, account, pipeline))
+
+  NotificationLambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
