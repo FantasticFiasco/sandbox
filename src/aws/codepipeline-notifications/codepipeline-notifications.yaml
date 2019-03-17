@@ -1,0 +1,152 @@
+Parameters:
+
+  EmailAddress:
+    Type: String
+    Description: The e-mail address to send CodePipeline notifications to
+
+  SourceObjectKey:
+    Type: String
+    Default: dummy.txt
+
+Resources:
+
+  # Pipeline started notification
+
+  StartedTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Topic for pipeline started events
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EmailAddress
+
+  StartedRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Action Execution State Change
+        detail:
+          state:
+            - STARTED
+      Targets:
+        - Id: StartedTopic
+          Arn: !Ref StartedTopic
+
+  # Pipeline succeeded notification
+
+  SucceededTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Topic for pipeline succeeded events
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EmailAddress
+
+  SucceededRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Action Execution State Change
+        detail:
+          state:
+            - SUCCEEDED
+      Targets:
+        - Id: SucceededTopic
+          Arn: !Ref SucceededTopic
+
+  # Pipeline failed notification
+
+  FailedTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: Topic for pipeline failed events
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref EmailAddress
+
+  FailedRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.codepipeline
+        detail-type:
+          - CodePipeline Action Execution State Change
+        detail:
+          state:
+            - FAILED
+      Targets:
+        - Id: FailedTopic
+          Arn: !Ref FailedTopic
+
+  # Pipeline
+
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucket
+      RoleArn: !GetAtt CodePipelineServiceRole.Arn
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: SourceAction
+              ActionTypeId:
+                Category: Source
+                Provider: S3
+                Owner: AWS
+                Version: "1"
+              OutputArtifacts:
+                - Name: SourceOutput
+              Configuration:
+                S3Bucket: !Ref SourceBucket
+                S3ObjectKey: !Ref SourceObjectKey
+        - Name: Approval
+          Actions:
+            - Name: ManualApproval
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: "1"
+
+  SourceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+
+  CodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+              - codepipeline.amazonaws.com
+          Action:
+            - sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: CodePipelineAccess
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - cloudformation:*
+                  - iam:PassRole
+                  - s3:*
+                Resource: "*"
