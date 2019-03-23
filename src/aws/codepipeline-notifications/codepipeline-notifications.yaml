@@ -88,6 +88,20 @@ Resources:
         - Protocol: lambda
           Endpoint: !GetAtt NotificationLambda.Arn
 
+  StartedTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref StartedTopic
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action:
+              - sns:Publish
+            Resource: "*"
+
   StartedRule:
     Type: AWS::Events::Rule
     Properties:
@@ -113,6 +127,20 @@ Resources:
         - Protocol: email
           Endpoint: !Ref EmailAddress
 
+  SucceededTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref SucceededTopic
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action:
+              - sns:Publish
+            Resource: "*"
+
   SucceededRule:
     Type: AWS::Events::Rule
     Properties:
@@ -137,6 +165,20 @@ Resources:
       Subscription:
         - Protocol: email
           Endpoint: !Ref EmailAddress
+
+  FailedTopicPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      Topics:
+        - !Ref FailedTopic
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Action:
+              - sns:Publish
+            Resource: "*"
 
   FailedRule:
     Type: AWS::Events::Rule
