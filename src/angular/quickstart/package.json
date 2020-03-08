@@ -40,7 +40,7 @@
     "zone.js": "0.6.26",
 
     "angular2-in-memory-web-api": "0.0.15",
-    "bootstrap": "3.3.7"
+    "bootstrap": "3.4.1"
   },
   "devDependencies": {
     "concurrently": "2.2.0",
