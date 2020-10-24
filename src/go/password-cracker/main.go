@@ -47,11 +47,8 @@ func main() {
 		fmt.Sprintf("Digest username=\"%s\", realm=\"%s\", nonce=\"%s\", uri=\"%s\", qop=auth, nc=%s, cnonce=\"%s\", response=\"%s\"", username, a.realm, a.nonce, u.Path+"?"+u.RawQuery, nc, cnonce, response))
 	res, err := c.Do(&req)
 	check(err)
-	fmt.Println(res.StatusCode)
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
-	check(err)
-	fmt.Println(string(body))
+	printResponse(res)
 }
 
 type authentication struct {
@@ -64,6 +61,7 @@ type authentication struct {
 func probeAuthentication(u string) authentication {
 	res, err := http.Get(u)
 	check(err)
+	printResponse(res)
 
 	h := res.Header.Get("WWW-Authenticate")
 	if h == "" {
@@ -100,4 +98,17 @@ func probeAuthentication(u string) authentication {
 func hash(s string) string {
 	h := md5.Sum([]byte(s))
 	return fmt.Sprintf("%x", h)
+}
+
+func printResponse(res *http.Response) {
+	fmt.Println("Response")
+	fmt.Println("  Status code:", res.StatusCode)
+	fmt.Println("  Headers:")
+	for k, v := range res.Header {
+		fmt.Println("    ", k, ":", v)
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	check(err)
+	fmt.Println("  Body")
+	fmt.Println(string(body))
 }
