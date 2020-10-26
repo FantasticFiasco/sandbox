@@ -6,9 +6,8 @@ import (
 )
 
 func TestGenerate(t *testing.T) {
-	fmt.Printf("kalle")
 	c := make(chan string)
-	go Generate(1, c)
+	go Generate("", 1, c)
 	for count := 1; ; count++ {
 		v, more := <-c
 		if !more {
