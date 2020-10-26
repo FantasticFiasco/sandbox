@@ -20,7 +20,7 @@ func Generate(length int, c chan<- []byte) {
 func recursiveGenerate(passwordBuffer []byte, i int, c chan<- []byte) {
 	for _, r := range LowercaseCharacters {
 		passwordBuffer[i] = byte(r)
-		if i == len(passwordBuffer)-1 {
+		if i+1 == len(passwordBuffer) {
 			password := make([]byte, len(passwordBuffer))
 			copy(password, passwordBuffer)
 			c <- password
