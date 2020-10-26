@@ -1,6 +1,8 @@
 package password
 
-import "passwordcracker/logger"
+import (
+	"passwordcracker/logger"
+)
 
 const (
 	LowercaseCharacters = "abcdefghijklmnopqrstuvwxyz"
@@ -8,20 +10,22 @@ const (
 	Numbers             = "0123456789"
 )
 
-func Generate(prefix string, length int, c chan<- string) {
+func Generate(length int, c chan<- []byte) {
 	logger.Infof("password: generate passwords with length %d\n", length)
-	recursiveGenerate(prefix, length, c)
+	passwordBuffer := make([]byte, length)
+	recursiveGenerate(passwordBuffer, 0, c)
 	close(c)
 }
 
-func recursiveGenerate(prefix string, remainingLength int, out chan<- string) {
-	remainingLength--
-	for _, c := range LowercaseCharacters + UppercaseCharacters + Numbers {
-		p := prefix + string(c)
-		if remainingLength == 0 {
-			out <- p
+func recursiveGenerate(passwordBuffer []byte, i int, c chan<- []byte) {
+	for _, r := range LowercaseCharacters {
+		passwordBuffer[i] = byte(r)
+		if i == len(passwordBuffer)-1 {
+			password := make([]byte, len(passwordBuffer))
+			copy(password, passwordBuffer)
+			c <- password
 		} else {
-			recursiveGenerate(p, remainingLength, out)
+			recursiveGenerate(passwordBuffer, i+1, c)
 		}
 	}
 }
