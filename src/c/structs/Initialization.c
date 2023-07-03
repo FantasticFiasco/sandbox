@@ -2,8 +2,8 @@
 
 typedef struct
 {
-    char first_name[100];
-    char surname[100];
+    char *first_name;
+    char *surname;
     int age;
 } Person;
 
