@@ -1,3 +1,5 @@
+// gcc WriteToFile.c
+
 #include <stdio.h>
 
 int main()

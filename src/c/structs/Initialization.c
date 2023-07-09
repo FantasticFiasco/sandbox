@@ -1,3 +1,5 @@
+// gcc Initialization.c
+
 #include <stdio.h>
 
 typedef struct

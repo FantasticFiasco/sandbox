@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "primes.h": "c",
+        "stdio.h": "c",
+        "math.h": "c"
+    }
+}

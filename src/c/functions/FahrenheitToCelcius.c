@@ -1,3 +1,5 @@
+// gcc FahrenheitToCelcius.c
+
 #include <stdio.h>
 
 double fahrenheit_to_celcius(double fahrenheit)

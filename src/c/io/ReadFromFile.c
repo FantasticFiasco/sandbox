@@ -1,3 +1,5 @@
+// gcc ReadFromFile.c
+
 #include <stdio.h>
 
 int main()
