@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+
+    <TargetFramework>net8.0</TargetFramework>
+    
+
+    <PublishAot>true</PublishAot>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+    
+    <!-- Uncomment the following line to optimize for size -->
+    <!-- <OptimizationPreference>Size</OptimizationPreference> -->
+
+    <!-- Uncomment the following line to optimize for speed -->
+    <!-- <OptimizationPreference>Speed</OptimizationPreference> -->
+
+    <InvariantGlobalization>true</InvariantGlobalization>
+    
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
