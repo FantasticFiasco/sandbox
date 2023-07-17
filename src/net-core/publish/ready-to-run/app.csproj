@@ -6,6 +6,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <PublishReadyToRun>true</PublishReadyToRun>
     <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+
+    <InvariantGlobalization>true</InvariantGlobalization>
     
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
